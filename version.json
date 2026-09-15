@@ -1,0 +1,11 @@
+{
+    "name": "ScrapX",
+    "version": "1.0.0",
+    "release_date": "2026-09-14",
+    "commit": "",
+    "release_notes": "Initial production release: marketplace, auctions, RFQ, orders, weighment, logistics, payments, commission, invoicing, notifications, admin panel, installer, backups and GitHub-based updater.",
+    "minimum_php": "8.2.0",
+    "database_version": "0013",
+    "required_extensions": ["pdo", "pdo_mysql", "json", "mbstring", "fileinfo", "openssl", "curl"],
+    "recommended_extensions": ["gd", "zip", "intl", "exif"]
+}
