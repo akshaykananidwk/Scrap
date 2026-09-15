@@ -31,7 +31,11 @@ final class View
 
         $layout ??= $data['layout'] ?? null;
         if ($layout) {
-            self::$sections['content'] = $content;
+            // A template that opened its own `content` section wins; otherwise
+            // everything the template echoed becomes the content section.
+            if (!isset(self::$sections['content'])) {
+                self::$sections['content'] = $content;
+            }
             $layoutFile = self::path($layout);
             if (!is_file($layoutFile)) {
                 throw new \RuntimeException('Layout not found: ' . $layout);

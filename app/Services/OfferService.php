@@ -371,7 +371,8 @@ final class OfferService
             [$where, $params] = Database::instance()->compileWhere(['id' => $currentIds]);
             $rows = Database::instance()->select(
                 'SELECT o.*, u.full_name AS created_by_name FROM offers o
-                 INNER JOIN users u ON u.id = o.created_by WHERE ' . $where . ' ORDER BY o.id',
+                 INNER JOIN users u ON u.id = o.created_by
+                 WHERE ' . str_replace('`id`', 'o.`id`', $where) . ' ORDER BY o.id',
                 $params
             );
             foreach ($rows as $row) {

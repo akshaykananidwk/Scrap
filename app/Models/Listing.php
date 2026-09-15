@@ -169,13 +169,19 @@ final class Listing extends Model
 
         if (!empty($filters['category_id'])) {
             $ids = Category::withDescendantIds((int) $filters['category_id']);
-            $placeholders = [];
+            // The id list is needed twice (category and subcategory). Native
+            // prepared statements bind one value per placeholder occurrence, so
+            // each side gets its own set rather than reusing :cat0, :cat1, …
+            $categoryPlaceholders = [];
+            $subcategoryPlaceholders = [];
             foreach ($ids as $i => $id) {
-                $placeholders[] = ':cat' . $i;
+                $categoryPlaceholders[] = ':cat' . $i;
+                $subcategoryPlaceholders[] = ':subcat' . $i;
                 $params['cat' . $i] = $id;
+                $params['subcat' . $i] = $id;
             }
-            $in = implode(',', $placeholders);
-            $from .= " AND (l.category_id IN ({$in}) OR l.subcategory_id IN ({$in}))";
+            $from .= ' AND (l.category_id IN (' . implode(',', $categoryPlaceholders) . ')'
+                . ' OR l.subcategory_id IN (' . implode(',', $subcategoryPlaceholders) . '))';
         }
         if (!empty($filters['material_id'])) {
             $from .= ' AND l.material_id = :material_id';

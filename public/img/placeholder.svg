@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="No photo available">
+  <rect width="400" height="300" fill="#e2e8f0"/>
+  <g fill="#94a3b8">
+    <rect x="150" y="118" width="100" height="70" rx="6"/>
+    <circle cx="176" cy="140" r="9" fill="#e2e8f0"/>
+    <path d="M154 184l28-28 20 20 16-14 28 22z" fill="#e2e8f0"/>
+  </g>
+  <text x="200" y="228" font-family="system-ui,sans-serif" font-size="15" fill="#64748b" text-anchor="middle">
+    No photo
+  </text>
+</svg>

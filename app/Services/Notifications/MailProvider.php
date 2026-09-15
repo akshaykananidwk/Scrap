@@ -27,7 +27,32 @@ final class MailProvider implements ChannelProvider
         if (SettingsService::get('mail_driver', 'mail') === 'smtp') {
             return SettingsService::configured('smtp_host', 'smtp_username', 'smtp_password');
         }
-        return function_exists('mail');
+        return self::mailTransportUsable();
+    }
+
+    /**
+     * mail() exists on every PHP build, so its presence proves nothing — a host
+     * with no MTA accepts the call and drops the message. Claiming "configured"
+     * there would queue mail that can never arrive, so check that a transport
+     * actually exists: a sendmail binary on Unix, or an SMTP host on Windows.
+     */
+    private static function mailTransportUsable(): bool
+    {
+        if (!function_exists('mail')) {
+            return false;
+        }
+
+        $sendmail = trim((string) ini_get('sendmail_path'));
+        if ($sendmail !== '') {
+            // sendmail_path is a command line: take the binary off the front.
+            $binary = (string) (preg_split('/\s+/', $sendmail)[0] ?? '');
+            if ($binary !== '' && is_executable($binary)) {
+                return true;
+            }
+        }
+
+        // Windows builds send through the SMTP/smtp_port ini pair instead.
+        return trim((string) ini_get('SMTP')) !== '' && stripos(PHP_OS_FAMILY, 'Windows') === 0;
     }
 
     public function send(string $recipient, string $subject, string $body, array $context = []): array

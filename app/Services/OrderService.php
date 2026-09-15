@@ -180,17 +180,37 @@ final class OrderService
     public static function recalculate(int $orderId): array
     {
         $order = Order::findOrFail($orderId);
-        $amounts = self::calculate([
-            'quantity' => $order['quantity'],
-            'unit_id' => (int) $order['unit_id'],
-            'rate' => $order['rate'],
-            'price_basis' => $order['price_basis'],
-            'gst_rate' => $order['gst_rate'],
-            'transport_charges' => $order['transport_charges'],
-            'loading_charges' => $order['loading_charges'],
-            'other_charges' => $order['other_charges'],
-            'discount' => $order['discount'],
-        ]);
+
+        // Once the material has been over a weighbridge, the settled figure is
+        // the truth — the ordered quantity was only ever an estimate. Rebuilding
+        // the subtotal from quantity x rate here would silently undo settlement,
+        // so a recorded weighment overrides the estimate for every later
+        // recalculation (charges edited, freight added, and so on).
+        $settled = self::settledSubtotal($orderId);
+
+        $amounts = $settled !== null
+            ? self::calculate([
+                'quantity' => 1,
+                'unit_id' => 0,
+                'rate' => $settled,
+                'price_basis' => 'lot',
+                'gst_rate' => $order['gst_rate'],
+                'transport_charges' => $order['transport_charges'],
+                'loading_charges' => $order['loading_charges'],
+                'other_charges' => $order['other_charges'],
+                'discount' => $order['discount'],
+            ])
+            : self::calculate([
+                'quantity' => $order['quantity'],
+                'unit_id' => (int) $order['unit_id'],
+                'rate' => $order['rate'],
+                'price_basis' => $order['price_basis'],
+                'gst_rate' => $order['gst_rate'],
+                'transport_charges' => $order['transport_charges'],
+                'loading_charges' => $order['loading_charges'],
+                'other_charges' => $order['other_charges'],
+                'discount' => $order['discount'],
+            ]);
 
         Database::instance()->update('orders', [
             'subtotal' => $amounts['subtotal'],
@@ -202,6 +222,22 @@ final class OrderService
 
         CommissionService::bookForOrder($orderId);
         return $amounts;
+    }
+
+    /**
+     * The settled material value from the most recent weighment that has not
+     * been rejected, or null when the order has never been weighed.
+     */
+    public static function settledSubtotal(int $orderId): ?string
+    {
+        $row = Database::instance()->first(
+            "SELECT settled_amount FROM weighments
+             WHERE order_id = :o AND status <> 'rejected'
+             ORDER BY id DESC LIMIT 1",
+            ['o' => $orderId]
+        );
+
+        return $row === null ? null : dec($row['settled_amount'], 2);
     }
 
     /** Move an order to a new status, enforcing the state machine. */

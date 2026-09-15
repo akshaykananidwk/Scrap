@@ -193,11 +193,13 @@ final class ChatService
         }
 
         $otherIds = array_values(array_unique(array_map(static fn (array $r): int => (int) $r['other_user_id'], $rows)));
-        [$where, $whereParams] = Database::instance()->compileWhere(['u.id' => $otherIds]);
+        // compileWhere() validates identifiers against [A-Za-z0-9_], so the
+        // column is passed unqualified and the table alias is applied in the SQL.
+        [$where, $whereParams] = Database::instance()->compileWhere(['id' => $otherIds]);
         $people = Database::instance()->select(
             'SELECT u.id, u.full_name, u.avatar, b.name AS business_name, b.logo, b.kyc_verified
              FROM users u LEFT JOIN businesses b ON b.user_id = u.id AND b.deleted_at IS NULL
-             WHERE ' . str_replace('`u.id`', 'u.id', $where),
+             WHERE ' . str_replace('`id`', 'u.`id`', $where),
             $whereParams
         );
         $byId = [];
