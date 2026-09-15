@@ -199,7 +199,6 @@ final class GitHubClient
         $ok = curl_exec($ch);
         $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
-        curl_close($ch);
         fclose($handle);
 
         if ($ok === false) {
@@ -235,7 +234,6 @@ final class GitHubClient
         $body = curl_exec($ch);
         $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
-        curl_close($ch);
 
         if ($body === false) {
             return ['ok' => false, 'error' => 'Could not reach GitHub: ' . $error];

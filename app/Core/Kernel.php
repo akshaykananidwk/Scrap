@@ -206,6 +206,20 @@ final class Kernel
             if (!(error_reporting() & $severity)) {
                 return false;
             }
+
+            // A deprecation notice means "this still works, but a future PHP
+            // will change it" — it is never a reason to take the site down.
+            // Throwing here meant that running on a newer PHP than the code was
+            // written for turned every deprecated call into a 500. Record it so
+            // it gets fixed, and carry on.
+            if ($severity === E_DEPRECATED || $severity === E_USER_DEPRECATED) {
+                Logger::instance()->warning('PHP deprecation: ' . $message, [
+                    'file' => $file,
+                    'line' => $line,
+                ]);
+                return true;
+            }
+
             throw new \ErrorException($message, 0, $severity, $file, $line);
         });
 

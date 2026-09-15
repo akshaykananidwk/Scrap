@@ -89,7 +89,6 @@ final class WhatsAppProvider implements ChannelProvider
         $response = curl_exec($ch);
         $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
-        curl_close($ch);
 
         if ($response === false) {
             return ['ok' => false, 'error' => 'WhatsApp request failed: ' . $error];
