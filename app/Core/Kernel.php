@@ -102,10 +102,18 @@ final class Kernel
         return Response::html((string) $result);
     }
 
+    /** Paths that must keep working while the site is in maintenance mode. */
+    private const MAINTENANCE_EXEMPT = ['/admin', '/cron', '/login', '/logout', '/install'];
+
     private static function enforceMaintenanceMode(Request $request): void
     {
-        if (str_starts_with($request->path(), '/admin') || str_starts_with($request->path(), '/cron')) {
-            return;
+        // Sign-in has to stay open: an administrator who is signed out during
+        // maintenance would otherwise be locked out of the switch that turns it
+        // off, because /admin redirects to /login.
+        foreach (self::MAINTENANCE_EXEMPT as $prefix) {
+            if (str_starts_with($request->path(), $prefix)) {
+                return;
+            }
         }
         if (!SettingsService::bool('maintenance_mode', false)) {
             return;
