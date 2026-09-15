@@ -15,7 +15,7 @@ View::section('content');
 </section>
 
 <div class="container py-5">
-    <div class="row g-5">
+    <div class="row g-4 g-lg-5">
         <div class="col-lg-6">
             <h4 class="text-teal mb-4"><i class="bi bi-box-seam me-2"></i>Selling scrap</h4>
             <?php foreach ([

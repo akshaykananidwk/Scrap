@@ -29,12 +29,12 @@ View::section('content');
     <div class="card-header bg-white"><h6 class="mb-0">Channel providers</h6></div>
     <ul class="list-group list-group-flush">
         <?php foreach ($providers as $key => $provider): ?>
-            <li class="list-group-item d-flex justify-content-between align-items-center small">
+            <li class="list-group-item d-flex flex-wrap justify-content-between align-items-center gap-2 small">
                 <span><?= e(label((string) $key)) ?> — <span class="text-muted"><?= e($provider->name()) ?></span></span>
                 <?php if ($provider->isConfigured()): ?>
                     <span class="badge badge-soft-success">Configured</span>
                 <?php else: ?>
-                    <span class="badge text-bg-secondary">Not configured — messages are marked skipped</span>
+                    <span class="badge text-bg-secondary text-wrap text-start">Not configured — messages are marked skipped</span>
                 <?php endif; ?>
             </li>
         <?php endforeach; ?>

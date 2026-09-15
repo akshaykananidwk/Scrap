@@ -26,7 +26,17 @@ $indexable = SettingsService::bool('seo_indexing_enabled', true);
     <meta property="og:title" content="<?= e($pageTitle) ?>">
     <meta property="og:description" content="<?= e($metaDescription) ?>">
     <meta property="og:url" content="<?= e($canonical ?? base_url(ltrim((string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/'))) ?>">
-    <?php $ogImage = !empty($og_image) ? upload_url($og_image) : (SettingsService::get('seo_og_image') ? upload_url((string) SettingsService::get('seo_og_image')) : asset('img/og-default.svg')); ?>
+    <?php
+    // Open Graph and Twitter cards are fetched by other sites, so the image has
+    // to be an absolute URL — a relative one yields no preview on WhatsApp or
+    // Facebook. base_url() makes whatever asset()/upload_url() returned whole.
+    $ogImageRelative = !empty($og_image)
+        ? upload_url($og_image)
+        : (SettingsService::get('seo_og_image')
+            ? upload_url((string) SettingsService::get('seo_og_image'))
+            : asset('img/og-default.svg'));
+    $ogImage = base_url(ltrim($ogImageRelative, '/'));
+    ?>
     <meta property="og:image" content="<?= e($ogImage) ?>">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<?= e($pageTitle) ?>">

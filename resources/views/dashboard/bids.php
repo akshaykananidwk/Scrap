@@ -20,11 +20,10 @@ View::section('content');
                                 <div class="small text-muted">Current</div>
                                 <div class="h6 mb-0"><?= money($auction['current_price']) ?></div>
                             </div>
-                            <div class="countdown small" data-countdown="<?= (int) countdown_seconds($auction['ends_at']) ?>"
-                                 data-ends-at="<?= e((string) $auction['ends_at']) ?>">
-                                <span class="countdown-box"><span data-unit="hours">00</span><small>h</small></span>
-                                <span class="countdown-box"><span data-unit="minutes">00</span><small>m</small></span>
-                                <span class="countdown-box"><span data-unit="seconds">00</span><small>s</small></span>
+                            <div class="countdown small js-countdown-box" data-seconds="<?= (int) countdown_seconds($auction['ends_at']) ?>">
+                                <span class="countdown-box"><span data-unit="h">00</span><small>h</small></span>
+                                <span class="countdown-box"><span data-unit="m">00</span><small>m</small></span>
+                                <span class="countdown-box"><span data-unit="s">00</span><small>s</small></span>
                             </div>
                         </div>
                     </div>

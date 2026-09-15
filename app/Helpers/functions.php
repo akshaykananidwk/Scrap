@@ -37,14 +37,53 @@ if (!function_exists('__')) {
 }
 
 if (!function_exists('base_url')) {
+    /**
+     * Absolute URL. Use for anything that leaves the page — emails, the sitemap,
+     * canonical and Open Graph tags.
+     *
+     * The origin follows the host the visitor actually used, so a site reached
+     * over https, or with a www prefix, does not generate links back to the
+     * other spelling. Since Content-Security-Policy restricts scripts, styles
+     * and form targets to 'self', a mismatch there does not merely look untidy:
+     * the browser blocks the site's own CSS, JS and form posts.
+     *
+     * The request host is only trusted when it resolves to the configured host,
+     * so a forged Host header cannot rewrite links in, say, a password-reset
+     * email.
+     */
     function base_url(string $path = ''): string
     {
-        $base = rtrim((string) Config::get('app.url', ''), '/');
-        if ($base === '') {
-            $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-            $base = $scheme . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost');
+        $configured = rtrim((string) Config::get('app.url', ''), '/');
+        $requestHost = (string) ($_SERVER['HTTP_HOST'] ?? '');
+
+        if ($requestHost !== '' && preg_match('/^[A-Za-z0-9.\-]+(:\d+)?$/', $requestHost) === 1) {
+            $configuredHost = (string) parse_url($configured, PHP_URL_HOST);
+            $bare = static fn (string $host): string => strtolower(preg_replace('/^www\./i', '', explode(':', $host)[0]) ?? '');
+
+            if ($configured === '' || $bare($configuredHost) === $bare($requestHost)) {
+                $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+                    || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https' ? 'https' : 'http';
+                $configured = $scheme . '://' . $requestHost . base_path();
+            }
         }
-        return $base . '/' . ltrim($path, '/');
+
+        if ($configured === '') {
+            $configured = 'http://localhost';
+        }
+
+        return $configured . '/' . ltrim($path, '/');
+    }
+}
+
+if (!function_exists('base_path')) {
+    /**
+     * The sub-directory the application is installed in, '' at a domain root.
+     * Lets assets be referenced relative to the site root without assuming one.
+     */
+    function base_path(): string
+    {
+        $path = (string) parse_url((string) Config::get('app.url', ''), PHP_URL_PATH);
+        return rtrim($path, '/');
     }
 }
 
@@ -56,9 +95,14 @@ if (!function_exists('url')) {
 }
 
 if (!function_exists('asset')) {
+    /**
+     * Root-relative on purpose. An asset is always served by the same site as
+     * the page referencing it, so tying it to a configured absolute URL only
+     * creates a way for the two to disagree.
+     */
     function asset(string $path): string
     {
-        return base_url('public/' . ltrim($path, '/'));
+        return base_path() . '/public/' . ltrim($path, '/');
     }
 }
 
@@ -66,9 +110,9 @@ if (!function_exists('upload_url')) {
     function upload_url(?string $path): string
     {
         if (!$path) {
-            return base_url('public/img/placeholder.svg');
+            return base_path() . '/public/img/placeholder.svg';
         }
-        return base_url('uploads/' . ltrim($path, '/'));
+        return base_path() . '/uploads/' . ltrim($path, '/');
     }
 }
 

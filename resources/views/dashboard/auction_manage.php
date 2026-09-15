@@ -59,12 +59,11 @@ $isEnded = in_array($auction['status'], ['ended', 'awarded'], true);
         <div>
             <strong>Live now</strong> — ends <span id="auction-ends"><?= e(fmt_dt($auction['ends_at'])) ?></span>
         </div>
-        <div class="countdown" data-countdown="<?= (int) countdown_seconds($auction['ends_at']) ?>"
-             data-ends-at="<?= e((string) $auction['ends_at']) ?>">
-            <span class="countdown-box"><span data-unit="days">00</span><small>d</small></span>
-            <span class="countdown-box"><span data-unit="hours">00</span><small>h</small></span>
-            <span class="countdown-box"><span data-unit="minutes">00</span><small>m</small></span>
-            <span class="countdown-box"><span data-unit="seconds">00</span><small>s</small></span>
+        <div class="countdown js-countdown-box" data-seconds="<?= (int) countdown_seconds($auction['ends_at']) ?>">
+            <span class="countdown-box"><span data-unit="d">00</span><small>d</small></span>
+            <span class="countdown-box"><span data-unit="h">00</span><small>h</small></span>
+            <span class="countdown-box"><span data-unit="m">00</span><small>m</small></span>
+            <span class="countdown-box"><span data-unit="s">00</span><small>s</small></span>
         </div>
     </div>
 <?php endif; ?>

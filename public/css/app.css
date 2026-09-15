@@ -158,9 +158,19 @@ a:hover { color: var(--teal-dark); }
 .sidebar .nav-link.active { background: var(--teal-soft); color: var(--teal-dark); font-weight: 600; }
 
 .admin-shell { min-height: calc(100vh - 56px); }
-.admin-sidebar {
-    width: 240px; flex: 0 0 240px; background: #0f172a; color: #cbd5e1;
+
+/* Colours are shared by the desktop rail and the mobile off-canvas drawer. */
+.admin-sidebar { background: #0f172a; color: #cbd5e1; }
+
+/* Sizing and stickiness belong to the desktop rail ONLY. Applying them to the
+   off-canvas body pinned the drawer to 240px, pushed it down 56px and clipped
+   it, so on a phone the admin menu opened half-drawn over an empty page. */
+aside.admin-sidebar {
+    width: 240px; flex: 0 0 240px;
     overflow-y: auto; max-height: calc(100vh - 56px); position: sticky; top: 56px;
+}
+.offcanvas-body.admin-sidebar {
+    width: auto; max-height: none; position: static; overflow-y: auto;
 }
 .admin-nav-group + .admin-nav-group { margin-top: .9rem; }
 .admin-nav-heading {
@@ -234,6 +244,12 @@ a:hover { color: var(--teal-dark); }
 .mobile-nav-item.primary i { color: var(--teal); font-size: 1.7rem; margin-top: -14px; }
 
 /* ---------- Misc ---------- */
+
+/* A flex item defaults to min-width:auto, which refuses to shrink below its
+   content. Without this, a `text-truncate` child never truncates and one long
+   title — a listing name, a business name — widens the whole page on a phone.
+   Bootstrap ships no such utility, and the markup relies on it throughout. */
+.min-w-0 { min-width: 0; }
 
 .whatsapp-float {
     position: fixed; right: 16px; bottom: 84px; z-index: 1035;
