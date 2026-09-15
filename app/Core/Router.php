@@ -101,9 +101,12 @@ final class Router
     public function route(string $name, array $params = []): string
     {
         $uri = $this->named[$name] ?? '/';
-        foreach ($params as $key => $value) {
-            $uri = preg_replace('#\{' . preg_quote((string) $key, '#') . '(:[^}]+)?\}#', (string) $value, $uri) ?? $uri;
-        }
+        $uri = $this->rewritePlaceholders(
+            $uri,
+            static fn (string $key, string $constraint): string => array_key_exists($key, $params)
+                ? (string) $params[$key]
+                : '{' . $key . ($constraint === '' ? '' : ':' . $constraint) . '}'
+        );
         return base_url(ltrim($uri, '/'));
     }
 
@@ -134,11 +137,63 @@ final class Router
 
     private function compile(string $uri): string
     {
-        $pattern = preg_replace_callback('#\{([a-zA-Z_][a-zA-Z0-9_]*)(?::([^}]+))?\}#', static function (array $m): string {
-            $constraint = $m[2] ?? '[^/]+';
-            return '(?P<' . $m[1] . '>' . $constraint . ')';
-        }, $uri);
+        $pattern = $this->rewritePlaceholders(
+            $uri,
+            static fn (string $name, string $constraint): string =>
+                '(?P<' . $name . '>' . ($constraint === '' ? '[^/]+' : $constraint) . ')'
+        );
         return '#^' . $pattern . '$#u';
+    }
+
+    /**
+     * Replace every {name} / {name:constraint} placeholder in a URI.
+     *
+     * A constraint is a regular expression and may contain braces of its own:
+     * `{pincode:\d{6}}` means a six-digit PIN code. Matching the closing brace
+     * with a simple pattern would cut the constraint short at `\d{6`, producing
+     * a route that can never match, so the end is found by counting depth.
+     * Anything that is not a well-formed placeholder is left as written.
+     *
+     * @param callable(string, string): string $replace Receives name and constraint.
+     */
+    private function rewritePlaceholders(string $uri, callable $replace): string
+    {
+        $out = '';
+        $length = strlen($uri);
+
+        for ($i = 0; $i < $length; $i++) {
+            if ($uri[$i] !== '{') {
+                $out .= $uri[$i];
+                continue;
+            }
+
+            $depth = 1;
+            $end = $i + 1;
+            for (; $end < $length && $depth > 0; $end++) {
+                if ($uri[$end] === '{') {
+                    $depth++;
+                } elseif ($uri[$end] === '}') {
+                    $depth--;
+                    if ($depth === 0) {
+                        break;
+                    }
+                }
+            }
+
+            $body = $depth === 0 ? substr($uri, $i + 1, $end - $i - 1) : '';
+            $colon = strpos($body, ':');
+            $name = $colon === false ? $body : substr($body, 0, $colon);
+
+            if ($depth !== 0 || preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $name) !== 1) {
+                $out .= $uri[$i];
+                continue;
+            }
+
+            $out .= $replace($name, $colon === false ? '' : substr($body, $colon + 1));
+            $i = $end;
+        }
+
+        return $out;
     }
 
     public function routes(): array

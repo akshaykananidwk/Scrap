@@ -12,9 +12,9 @@ exercised, it is listed under *Not tested* with the reason.
 
 | Check | Result |
 |---|---|
-| `php -l` across every PHP file (283 files) | **Pass** — 0 parse errors |
+| `php -l` across every PHP file (282 files) | **Pass** — 0 parse errors |
 | View template parse check (`cli.php health`) | **Pass** — all 124 templates parse |
-| Routes registered | 292 |
+| Routes registered | 302 |
 
 ## 2. Installation
 
@@ -313,6 +313,49 @@ These were found **by running the software**, not by reading it.
     `offered_quantity`, `resolved_amount`, `mobile_verified`, `is_popular`, `type` on commissions
     and messages, and others). Each was corrected against the real schema and the page re-tested.
 
+11. **Maintenance mode locked the administrator out.** `/login` was served the 503 page, and `/admin`
+    redirects to `/login`, so nobody could reach the switch that turns maintenance off.
+    *Fixed:* sign-in, sign-out, the admin panel, cron and the installer stay reachable.
+
+12. **A PHP deprecation notice took the whole site down.** The error handler converted every notice
+    into an exception, so `curl_close()` — deprecated in PHP 8.5, and harmless — produced a 500 on
+    the update screen. *Fixed:* the redundant `curl_close()` calls were removed, and deprecations are
+    now logged as warnings instead of thrown. Real errors still produce a 500.
+
+13. **Extra protected paths were silently discarded.** The update settings form posted
+    `update_protected_paths` and the controller read `protected_paths`, so anything an operator added
+    to the never-overwrite list was wiped on save. *Fixed:* the controller reads the posted name.
+
+14. **The admin menu was unusable on a phone.** The off-canvas drawer shared a CSS class with the
+    desktop sidebar rail and inherited its 240px width, sticky position and clipped height, so
+    tapping the menu opened a half-drawn panel over an empty page. *Fixed:* sizing belongs to the
+    desktop rail alone; the drawer now measures a full 390×844 with all 35 items reachable.
+
+15. **`.min-w-0` was used 26 times and defined nowhere.** Bootstrap ships no such utility. A flex item
+    defaults to `min-width: auto`, so every `text-truncate` inside a flex row silently failed and one
+    long title widened the whole page. *Fixed:* defined once in `app.css`.
+
+16. **Asset URLs could be blocked by the site's own Content-Security-Policy.** Links were built from
+    the configured site URL rather than the host being browsed, so any mismatch (http vs https, www
+    vs bare, a proxy terminating TLS) made the browser refuse the site's own CSS and JS.
+    *Fixed:* `base_url()` follows the request host when it resolves to the configured host — a forged
+    `Host` header still cannot rewrite links in a password-reset email — and assets are emitted
+    relative to the install path. Open Graph images stay absolute.
+
+17. **Two auction countdowns never moved.** Those templates invented `data-countdown` /
+    `data-ends-at` attributes while `app.js` drives `.js-countdown-box` with `data-seconds`.
+    *Fixed:* markup aligned; both now tick.
+
+18. **Long rupee figures pushed pages sideways on a phone.** A statistic card's value has no spaces
+    to break at, so ₹1,23,45,678.00 is wider than a third of a 390px screen.
+    *Fixed:* the value wraps inside its card.
+
+19. **The pincode lookup API could never be reached.** The router matched a placeholder's closing
+    brace with `[^}]+`, so the constraint in `/pincode/{pincode:\d{6}}` was cut short at `\d{6` and
+    the route compiled to a pattern that matches nothing. Address forms therefore never auto-filled
+    city and state from a PIN code. *Fixed:* the router counts brace depth. Verified end to end:
+    CSV template → admin import → `/api/v1/pincode/361001` → `{"city":"Jamnagar","state":"Gujarat"}`.
+
 ## 9. Not tested
 
 Stated plainly rather than implied:
@@ -330,22 +373,50 @@ Stated plainly rather than implied:
   transmission was not.
 - **Real Apache/`.htaccess` behaviour** — testing used PHP's built-in server, which ignores
   `.htaccess`. The rules are present and were reviewed, but their enforcement was not observed.
-- **Browser-side JavaScript** — countdowns, live-bid polling, the sell wizard's step validation and
-  chat polling were verified server-side (the endpoints they call return correct JSON) and every
-  feature has a non-JS fallback, but no browser automation was run.
 - **Load and stress behaviour** — concurrency was proven for the specific two-bid race that matters
   most; no sustained load test was performed.
+- **Real devices** — the browser testing below ran in headless Chromium at phone and desktop sizes.
+  No physical phone, and no Safari or Firefox, was used.
+
+## 9a. Browser testing
+
+This section was originally part of *Not tested*. It now records what was actually run.
+
+Every page was loaded in headless Chromium at 390×844 (phone) and 1280×844 (desktop) — 67 URLs at
+each size across the public site, the member dashboard and the admin panel, signed in where the page
+requires it. Each load was checked for its HTTP status, for uncaught JavaScript errors, for console
+errors, and for horizontal overflow (a page wider than the screen, which is what makes a site feel
+broken on a phone).
+
+Final result: **0 problems across all 134 page loads** — no failed navigation, no JavaScript error,
+no console error, no horizontal overflow.
+
+Interactive behaviour was driven rather than inspected:
+
+| Behaviour | Result |
+|---|---|
+| Sell wizard (9 steps) | Next advances to step 2, Back returns to step 1 |
+| Auction countdown, public page | Ticking |
+| Auction countdown, seller console | Ticking |
+| Public mobile navigation drawer | Opens, 23 links reachable |
+| Admin mobile menu | Full-screen overlay at 0,0 390×844, 35 items, last item reachable |
+| Fixed bottom bar vs page content | Body padding 68px ≥ bar height 65px, nothing covered |
+| Pincode → city/state auto-fill | CSV import → `/api/v1/pincode/361001` → `{"city":"Jamnagar","state":"Gujarat"}` |
+
+Seven faults were found this way and fixed; they are listed in §8.
 
 ## 10. Summary
 
 | Metric | Value |
 |---|---|
-| PHP files | 283 |
-| Lines of PHP | 46,427 |
+| PHP files | 282 |
+| Lines of PHP | 46,578 |
 | Database tables | 84 |
-| Routes | 292 |
+| Routes | 302 |
 | View templates | 124 |
 | Parse errors | 0 |
 | Pages returning non-200 in the final sweep | 0 |
 | Errors logged during the final sweep | 0 |
-| Defects found by testing and fixed | 10 |
+| Defects found by testing and fixed | 19 |
+| Browser page loads checked (67 URLs × 2 screen sizes) | 134 |
+| Browser problems remaining | 0 |
