@@ -36,7 +36,21 @@ final class Kernel
             $message = Config::get('app.debug')
                 ? $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine()
                 : HttpException::defaultMessage(500);
-            $response = self::renderError($request, 500, $message);
+            // Staff see the real cause on the page itself. Without this an
+            // administrator hitting a 500 has nothing to act on but a shrug,
+            // and has to go digging through log files to find out what broke.
+            $detail = null;
+            if (!Config::get('app.debug')) {
+                try {
+                    $detail = Auth::check() && Auth::isStaff()
+                        ? get_class($e) . ': ' . $e->getMessage()
+                            . ' @ ' . str_replace(ROOT_PATH . '/', '', $e->getFile()) . ':' . $e->getLine()
+                        : null;
+                } catch (Throwable) {
+                    $detail = null;
+                }
+            }
+            $response = self::renderError($request, 500, $message, $detail);
         }
 
         $response->send();
@@ -128,15 +142,24 @@ final class Kernel
         throw new HttpException(503, (string) SettingsService::get('maintenance_message', 'Website is temporarily under maintenance.'));
     }
 
-    private static function renderError(Request $request, int $status, string $message): Response
-    {
+    private static function renderError(
+        Request $request,
+        int $status,
+        string $message,
+        ?string $detail = null
+    ): Response {
         if ($request->wantsJson()) {
-            return Response::json(['success' => false, 'error' => $message, 'status' => $status], $status);
+            $payload = ['success' => false, 'error' => $message, 'status' => $status];
+            if ($detail !== null) {
+                $payload['detail'] = $detail;
+            }
+            return Response::json($payload, $status);
         }
         try {
             $html = View::render('errors/error', [
                 'status' => $status,
                 'message' => $message,
+                'detail' => $detail,
                 'title' => $status . ' — ' . HttpException::defaultMessage($status),
             ], is_installed() ? 'layouts/app' : 'layouts/bare');
             return Response::html($html, $status);

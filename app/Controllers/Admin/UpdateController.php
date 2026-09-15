@@ -83,10 +83,13 @@ final class UpdateController extends Controller
             SettingsService::set('github_token', '', 'secret', 'updates');
         }
 
-        // Custom protected paths, one per line.
+        // Custom protected paths, one per line. The field is named after the
+        // setting; the older name is still accepted so an existing form post
+        // does not silently wipe the list.
+        $raw = (string) ($request->input('update_protected_paths') ?? $request->input('protected_paths', ''));
         $custom = array_values(array_filter(array_map(
-            static fn (string $line): string => trim(str_replace('\\', '/', $line), "/ \t"),
-            explode("\n", (string) $request->input('protected_paths', ''))
+            static fn (string $line): string => trim(str_replace('\\', '/', $line), "/ \t\r"),
+            explode("\n", $raw)
         )));
         SettingsService::set('update_protected_paths', $custom, 'json', 'updates');
 
