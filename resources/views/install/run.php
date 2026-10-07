@@ -6,7 +6,7 @@ View::section('content');
 ?>
 <div class="card border-0 shadow-sm">
     <div class="card-body p-4">
-        <h1 class="h5 mb-1">Installing <?= e($site_name ?? 'ScrapX') ?></h1>
+        <h1 class="h5 mb-1">Installing <?= e($site_name ?? site_name()) ?></h1>
         <p class="text-muted small mb-4">
             Creating tables, seeding data and setting up your administrator. This usually takes 10–40 seconds —
             please do not close this page.

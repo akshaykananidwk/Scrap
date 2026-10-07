@@ -44,7 +44,7 @@ View::section('content');
 
             <hr class="my-4">
             <p class="text-center small mb-0">
-                New to ScrapX? <a href="<?= e(url('register')) ?>" class="fw-semibold">Create a free business account</a>
+                New to <?= e(site_name()) ?>? <a href="<?= e(url('register')) ?>" class="fw-semibold">Create a free business account</a>
             </p>
         </div>
     </div>

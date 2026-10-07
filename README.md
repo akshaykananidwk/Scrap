@@ -1,4 +1,4 @@
-# ScrapX — B2B Scrap Trading Marketplace for India
+# Scraptrading — B2B Scrap Trading Marketplace for India
 
 A production marketplace for scrap trading: listings, live auctions, buyer requirements, RFQs,
 orders settled on actual weighbridge weight, GST invoices, and a full admin panel.
@@ -30,7 +30,7 @@ Full details in [docs/INSTALLATION.md](docs/INSTALLATION.md).
 
 ## Why weighment matters
 
-Scrap is quoted on an estimate and settled on fact. ScrapX records the weighbridge slip — gross,
+Scrap is quoted on an estimate and settled on fact. Scraptrading records the weighbridge slip — gross,
 tare, net, deductions — and re-prices the order on the weight that actually arrived. Both sides see
 the same numbers, and the platform commission follows the settled value, not the estimate.
 

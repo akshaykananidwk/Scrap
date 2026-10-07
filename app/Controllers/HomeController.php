@@ -25,7 +25,7 @@ final class HomeController extends Controller
     public function index(Request $request): Response
     {
         return $this->view('home/index', [
-            'title' => (string) SettingsService::get('site_name', 'ScrapX') . ' — ' . SettingsService::get('site_tagline', "India's B2B Scrap Trading Marketplace"),
+            'title' => site_name() . ' — ' . SettingsService::get('site_tagline', "India's B2B Scrap Trading Marketplace"),
             'meta_description' => (string) SettingsService::get('seo_meta_description', ''),
             'stats' => AnalyticsService::publicStats(),
             'categories' => Category::featured(8),
@@ -53,8 +53,8 @@ final class HomeController extends Controller
     {
         $page = Database::instance()->first("SELECT * FROM cms_pages WHERE slug = 'how-it-works' AND is_published = 1");
         return $this->view('home/how_it_works', [
-            'title' => 'How ScrapX Works',
-            'meta_description' => 'From listing to weighment to payment — how buying and selling scrap works on ScrapX.',
+            'title' => 'How ' . site_name() . ' Works',
+            'meta_description' => 'From listing to weighment to payment — how buying and selling scrap works on ' . site_name() . '.',
             'page' => $page,
         ]);
     }
@@ -70,7 +70,7 @@ final class HomeController extends Controller
         }
         return $this->view('home/pricing', [
             'title' => 'Plans & Pricing',
-            'meta_description' => 'Subscription plans, commission rates and platform fees on ScrapX.',
+            'meta_description' => 'Subscription plans, commission rates and platform fees on ' . site_name() . '.',
             'plans' => $plans,
             'commission' => [
                 'percentage' => SettingsService::get('commission_percentage', '0'),
@@ -176,7 +176,7 @@ final class HomeController extends Controller
 
     public function manifest(Request $request): Response
     {
-        $name = (string) SettingsService::get('site_name', 'ScrapX');
+        $name = site_name();
         $logo = SettingsService::get('site_logo', '');
 
         $manifest = [

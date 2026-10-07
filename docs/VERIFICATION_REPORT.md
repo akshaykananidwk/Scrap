@@ -378,6 +378,30 @@ Stated plainly rather than implied:
 - **Real devices** — the browser testing below ran in headless Chromium at phone and desktop sizes.
   No physical phone, and no Safari or Firefox, was used.
 
+20. **Form submissions could be blocked by the site's own security policy.** Form actions were
+    absolute URLs built from the configured site URL. Under
+    `Content-Security-Policy: form-action 'self'`, any disagreement between that URL and the host
+    being browsed makes the browser refuse the submission — silently, with only a console message.
+    Caught by driving the language switcher in a real browser, where the console read
+    *"Refused to send form data … because it violates … form-action 'self'"* and the page simply did
+    not change language. *Fixed:* in-site links, form actions and internal redirects are now
+    root-relative, which cannot disagree with the page they came from. Emails, the sitemap,
+    canonical and Open Graph tags stay absolute, and that split was re-checked after the change.
+
+21. **The layout did not tolerate a longer site name.** Renaming the platform from a 6-character
+    name to a 12-character one pushed the admin top bar 31px past a 390px screen and the member
+    header 36px past 1280px — on every page using those layouts. The name is operator-configurable,
+    so the chrome has to absorb any length. *Fixed:* the admin brand shrinks and truncates while the
+    menu and account controls keep their size; in the member header the search box flexes and the
+    brand is capped at a third of the bar. The one-line header measures as needing ~1200px, so it
+    now expands at `xl` instead of `lg` — between 992 and 1199px everything stays in the drawer,
+    where the search box gets full width instead of being squeezed to 22px.
+
+22. **Four separate hard-coded copies of the language list.** `Lang::SUPPORTED`, the profile
+    dropdown, the profile validation rule and the admin default all listed `en, hi, gu`
+    independently, so a newly added language appeared in some places and was silently rejected by
+    others. *Fixed:* all four derive from `Lang::SUPPORTED`.
+
 ## 9a. Browser testing
 
 This section was originally part of *Not tested*. It now records what was actually run.
@@ -403,20 +427,50 @@ Interactive behaviour was driven rather than inspected:
 | Fixed bottom bar vs page content | Body padding 68px ≥ bar height 65px, nothing covered |
 | Pincode → city/state auto-fill | CSV import → `/api/v1/pincode/361001` → `{"city":"Jamnagar","state":"Gujarat"}` |
 
-Seven faults were found this way and fixed; they are listed in §8.
+### Re-run after the rename and the language work
+
+The whole audit was run again after renaming the platform and adding four languages. Final result:
+**0 problems across all 134 page loads**, and these behaviours were driven individually:
+
+| Behaviour | Result |
+|---|---|
+| Public nav drawer at 390px | Opens, 10 links visible, language switcher inside it |
+| Language switcher in the drawer | All 7 options; choosing ગુજરાતી → `html lang="gu"`, nav reads "ભંગાર ખરીદો"; back to English restores it |
+| Admin drawer at 390px | Full-screen overlay at 0,0 390×844, 35 items, brand not clipped off screen |
+| Header at 390 / 768 / 992 / 1100 / 1199 / 1200 / 1280 / 1440 / 1920px | No overflow at any width; brand never truncated |
+| Countdown, auctions list (`.js-countdown`) | Ticking — "1d 23:59:06" → "1d 23:59:04" |
+| Countdown, auction page (`.js-countdown-box`) | Ticking — "01days 23hrs 59min 03sec" → "…59min 01sec" |
+| Countdown, home page | Ticking |
+| Countdown, My Bids | Ticking — "23h 58m 35s" → "23h 58m 33s" |
+| Sell wizard, empty step 1 | Next correctly refuses to advance |
+| Sell wizard, step 1 filled | Next → step 2, Back → step 1 |
+| JavaScript errors across all of the above | 0 |
+
+Server-side alongside it: 77 GET routes as guest, admin, seller and buyer, plus 34 detail pages —
+all expected statuses, nothing in the error log — and every PHP file parses.
+
+Two results above are worth stating precisely rather than as a pass. The demo auctions had ended
+three weeks before this run (the scheduler does not run in this environment), so their end times
+were pushed forward to produce a live countdown to measure. And `/dashboard/bids` shows no
+countdown for the administrator because that account has placed no bids; it was re-checked as a
+demo buyer who has.
+
+Ten faults were found by browser testing and fixed; they are listed in §8.
 
 ## 10. Summary
 
 | Metric | Value |
 |---|---|
 | PHP files | 282 |
-| Lines of PHP | 46,578 |
+| Lines of PHP | 46,749 |
 | Database tables | 84 |
 | Routes | 302 |
 | View templates | 124 |
 | Parse errors | 0 |
 | Pages returning non-200 in the final sweep | 0 |
 | Errors logged during the final sweep | 0 |
-| Defects found by testing and fixed | 19 |
+| Defects found by testing and fixed | 22 |
 | Browser page loads checked (67 URLs × 2 screen sizes) | 134 |
 | Browser problems remaining | 0 |
+| Interface languages | 7 |
+| Database migrations | 14 |

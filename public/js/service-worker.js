@@ -1,5 +1,5 @@
 /**
- * ScrapX service worker.
+ * ScrapTrading service worker.
  *
  * Deliberately conservative: an offline shell plus cached static assets, but
  * NEVER cached responses for money-critical pages. Serving a stale auction page
@@ -91,11 +91,11 @@ self.addEventListener('push', (event) => {
     try {
         payload = event.data.json();
     } catch (e) {
-        payload = { title: 'ScrapX', body: event.data.text() };
+        payload = { title: 'ScrapTrading', body: event.data.text() };
     }
 
     event.waitUntil(
-        self.registration.showNotification(payload.title || 'ScrapX', {
+        self.registration.showNotification(payload.title || 'ScrapTrading', {
             body: payload.body || '',
             icon: '/public/img/icon-192.png',
             badge: '/public/img/icon-192.png',

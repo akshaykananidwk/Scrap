@@ -1,6 +1,6 @@
 # The GitHub update system
 
-ScrapX updates itself from a GitHub repository — no SSH, no FTP, no command line.
+Scraptrading updates itself from a GitHub repository — no SSH, no FTP, no command line.
 
 ## Setup
 
@@ -52,7 +52,7 @@ construction, not by convention.
 
 ## Automatic rollback
 
-If any step fails, ScrapX restores the pre-update backup — files **and** database — and records the
+If any step fails, Scraptrading restores the pre-update backup — files **and** database — and records the
 update as `rolled_back` with the error and a step-by-step log. A successful update can also be
 rolled back manually from its detail page while the backup still exists.
 

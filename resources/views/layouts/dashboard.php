@@ -6,7 +6,7 @@ use App\Services\ChatService;
 use App\Services\NotificationService;
 use App\Services\SettingsService;
 
-$siteName = (string) SettingsService::get('site_name', 'ScrapX');
+$siteName = site_name();
 $user = Auth::user() ?? [];
 $userId = (int) ($user['id'] ?? 0);
 $unreadMessages = $userId > 0 ? ChatService::unreadCount($userId) : 0;

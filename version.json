@@ -1,11 +1,24 @@
 {
-    "name": "ScrapX",
-    "version": "1.0.0",
-    "release_date": "2026-09-14",
+    "name": "Scraptrading",
+    "version": "1.1.0",
+    "release_date": "2026-10-07",
     "commit": "",
-    "release_notes": "Initial production release: marketplace, auctions, RFQ, orders, weighment, logistics, payments, commission, invoicing, notifications, admin panel, installer, backups and GitHub-based updater.",
+    "release_notes": "Renamed the platform to Scraptrading, with the name now taken from a single setting so it can be changed in the admin panel at any time. Added Marathi, Bengali, Tamil and Punjabi alongside English, Hindi and Gujarati, with a language switcher reachable on a phone. Fixed the route compiler dropping any route whose constraint contained a quantifier, which had disabled the pincode lookup, and made in-site links and form actions relative so Content-Security-Policy cannot block a form submission.",
     "minimum_php": "8.2.0",
-    "database_version": "0013",
-    "required_extensions": ["pdo", "pdo_mysql", "json", "mbstring", "fileinfo", "openssl", "curl"],
-    "recommended_extensions": ["gd", "zip", "intl", "exif"]
+    "database_version": "0014",
+    "required_extensions": [
+        "pdo",
+        "pdo_mysql",
+        "json",
+        "mbstring",
+        "fileinfo",
+        "openssl",
+        "curl"
+    ],
+    "recommended_extensions": [
+        "gd",
+        "zip",
+        "intl",
+        "exif"
+    ]
 }

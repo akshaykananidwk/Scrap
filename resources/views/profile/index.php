@@ -9,7 +9,7 @@ $query = $filters ?? [];
     <div class="container">
         <h1 class="h4 mb-1"><?= e($heading) ?></h1>
         <p class="text-muted small mb-0">
-            Traders, dealers, aggregators, recyclers, manufacturers and transporters on ScrapX.
+            Traders, dealers, aggregators, recyclers, manufacturers and transporters on <?= e(site_name()) ?>.
         </p>
     </div>
 </div>

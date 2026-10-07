@@ -71,7 +71,7 @@ final class RazorpayGateway implements PaymentGateway
                 'amount' => $amountPaise,
                 'currency' => 'INR',
                 'order_id' => (string) ($response['data']['id'] ?? ''),
-                'name' => (string) SettingsService::get('site_name', 'ScrapX'),
+                'name' => site_name(),
                 'description' => substr((string) ($context['description'] ?? 'Marketplace payment'), 0, 120),
                 'prefill' => [
                     'name' => (string) ($context['name'] ?? ''),

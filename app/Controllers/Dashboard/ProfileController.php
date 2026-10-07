@@ -7,6 +7,7 @@ namespace App\Controllers\Dashboard;
 use App\Core\Auth;
 use App\Core\Controller;
 use App\Core\Database;
+use App\Core\Lang;
 use App\Core\Request;
 use App\Core\Response;
 use App\Core\Session;
@@ -39,7 +40,9 @@ final class ProfileController extends Controller
             'alt_mobile' => 'nullable|mobile',
             'designation' => 'nullable|max:100',
             'account_type' => 'required|in:buyer,seller,both',
-            'preferred_language' => 'nullable|in:en,hi,gu',
+            // Derived from Lang::SUPPORTED so a newly added language is accepted
+            // here the moment its file exists, instead of failing validation silently.
+            'preferred_language' => 'nullable|in:' . implode(',', array_keys(Lang::SUPPORTED)),
         ], ['full_name' => 'Full name', 'alt_mobile' => 'Alternate mobile']);
 
         if ($validator->fails()) {

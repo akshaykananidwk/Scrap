@@ -103,6 +103,17 @@ View::section('content');
                                 <?php elseif ($setting['type'] === 'decimal'): ?>
                                     <input id="s-<?= e($key) ?>" name="settings[<?= e($key) ?>]" type="number" step="0.001"
                                            class="form-control" value="<?= e((string) $setting['value']) ?>">
+                                <?php elseif (($choices = App\Services\SettingsService::choices($key)) !== []): ?>
+                                    <?php // Settings with a fixed set of valid values pick from it, so a typo
+                                          // cannot leave the site running on a language that does not exist. ?>
+                                    <select id="s-<?= e($key) ?>" name="settings[<?= e($key) ?>]" class="form-select">
+                                        <?php foreach ($choices as $value => $label): ?>
+                                            <option value="<?= e((string) $value) ?>"
+                                                <?= (string) $setting['value'] === (string) $value ? 'selected' : '' ?>>
+                                                <?= e((string) $label) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 <?php else: ?>
                                     <input id="s-<?= e($key) ?>" name="settings[<?= e($key) ?>]" class="form-control"
                                            value="<?= e((string) $setting['value']) ?>">

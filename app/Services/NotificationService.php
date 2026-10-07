@@ -66,7 +66,7 @@ final class NotificationService
     {
         $meta = self::EVENTS[$event] ?? ['Notification', [], 'bi-bell', 'info'];
         $vars = $payload['vars'] ?? [];
-        $vars['site_name'] ??= (string) SettingsService::get('site_name', 'ScrapX');
+        $vars['site_name'] ??= site_name();
 
         $title = $payload['title'] ?? str_replace(':site', $vars['site_name'], $meta[0]);
         $body = $payload['body'] ?? '';

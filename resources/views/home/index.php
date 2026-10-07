@@ -275,7 +275,7 @@ View::section('content');
 <section class="py-5">
     <div class="container">
         <div class="text-center mb-4">
-            <h2 class="h4 mb-1">How ScrapX works</h2>
+            <h2 class="h4 mb-1">How <?= e(site_name()) ?> works</h2>
             <p class="text-muted small mb-0">The same deal flow every serious scrap trade follows.</p>
         </div>
 
@@ -400,12 +400,12 @@ View::section('content');
                         <h3 class="accordion-header">
                             <button class="accordion-button <?= $index === 0 ? '' : 'collapsed' ?>" type="button"
                                     data-bs-toggle="collapse" data-bs-target="#faq<?= (int) $faq['id'] ?>">
-                                <?= e((string) $faq['question']) ?>
+                                <?= e(cms_text($faq['question'])) ?>
                             </button>
                         </h3>
                         <div id="faq<?= (int) $faq['id'] ?>" class="accordion-collapse collapse <?= $index === 0 ? 'show' : '' ?>"
                              data-bs-parent="#homeFaq">
-                            <div class="accordion-body small"><?= strip_tags((string) $faq['answer'], '<p><br><ul><ol><li><strong><em><a>') ?></div>
+                            <div class="accordion-body small"><?= cms_html($faq['answer'], '<p><br><ul><ol><li><strong><em><a>') ?></div>
                         </div>
                     </div>
                 <?php endforeach; ?>

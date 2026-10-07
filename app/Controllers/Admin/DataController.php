@@ -110,7 +110,7 @@ final class DataController extends Controller
         }
         file_put_contents($path, ImportService::template($type));
 
-        return Response::download($path, 'scrapx_' . $type . '_template.csv', 'text/csv; charset=UTF-8');
+        return Response::download($path, site_slug() . '_' . $type . '_template.csv', 'text/csv; charset=UTF-8');
     }
 
     public function purgeDemo(Request $request): Response

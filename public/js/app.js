@@ -1,5 +1,5 @@
 /**
- * ScrapX front-end.
+ * ScrapTrading front-end.
  *
  * Vanilla JS only — no build step, no framework. Everything is progressive:
  * every feature here has a working non-JS fallback (a normal form post or link),
@@ -12,7 +12,7 @@
 
     // ---------------------------------------------------------------- helpers
 
-    window.ScrapX = {
+    window.ScrapTrading = {
         csrfToken,
 
         async post(url, data = {}, options = {}) {
@@ -109,7 +109,7 @@
                 return;
             }
 
-            const parts = ScrapX.formatDuration(seconds);
+            const parts = ScrapTrading.formatDuration(seconds);
             const pad = (n) => String(n).padStart(2, '0');
             el.textContent = parts.d > 0
                 ? `${parts.d}d ${pad(parts.h)}:${pad(parts.m)}:${pad(parts.s)}`
@@ -121,7 +121,7 @@
         document.querySelectorAll('.js-countdown-box').forEach((box) => {
             let seconds = Math.max(0, parseInt(box.dataset.seconds || '0', 10) - 1);
             box.dataset.seconds = String(seconds);
-            const parts = ScrapX.formatDuration(seconds) || { d: 0, h: 0, m: 0, s: 0 };
+            const parts = ScrapTrading.formatDuration(seconds) || { d: 0, h: 0, m: 0, s: 0 };
             const set = (key, value) => {
                 const node = box.querySelector('[data-unit="' + key + '"]');
                 if (node) node.textContent = String(value).padStart(2, '0');
@@ -145,7 +145,7 @@
         event.preventDefault();
         button.disabled = true;
 
-        const result = await ScrapX.post('/dashboard/favorites/toggle', {
+        const result = await ScrapTrading.post('/dashboard/favorites/toggle', {
             type: button.dataset.type || 'listing',
             id: button.dataset.id,
         });
@@ -156,9 +156,9 @@
             if (icon) {
                 icon.className = result.saved ? 'bi bi-bookmark-fill text-teal' : 'bi bi-bookmark';
             }
-            ScrapX.toast(result.message, 'success');
+            ScrapTrading.toast(result.message, 'success');
         } else {
-            ScrapX.toast(result.error || 'Sign in to save listings.', 'danger');
+            ScrapTrading.toast(result.error || 'Sign in to save listings.', 'danger');
         }
     });
 
@@ -171,7 +171,7 @@
             if (!target || !this.value) return;
 
             target.innerHTML = '<option value="">Loading…</option>';
-            const result = await ScrapX.get('/api/v1/categories/' + encodeURIComponent(this.value) + '/materials');
+            const result = await ScrapTrading.get('/api/v1/categories/' + encodeURIComponent(this.value) + '/materials');
             target.innerHTML = '<option value="">Select material</option>';
 
             (result.data || []).forEach((material) => {
@@ -198,7 +198,7 @@
             if (gstField && option?.dataset.gstRate) gstField.value = option.dataset.gstRate;
 
             target.innerHTML = '<option value="">Loading…</option>';
-            const result = await ScrapX.get('/api/v1/materials/' + encodeURIComponent(this.value) + '/grades');
+            const result = await ScrapTrading.get('/api/v1/materials/' + encodeURIComponent(this.value) + '/grades');
             target.innerHTML = '<option value="">Select grade (optional)</option>';
 
             (result.data || []).forEach((grade) => {
@@ -216,7 +216,7 @@
             if (!target || !this.value) return;
 
             target.innerHTML = '<option value="">Loading…</option>';
-            const result = await ScrapX.get('/api/v1/states/' + encodeURIComponent(this.value) + '/cities');
+            const result = await ScrapTrading.get('/api/v1/states/' + encodeURIComponent(this.value) + '/cities');
             target.innerHTML = '<option value="">Select city</option>';
 
             (result.data || []).forEach((city) => {
@@ -234,7 +234,7 @@
             const pincode = (this.value || '').replace(/\D/g, '');
             if (pincode.length !== 6) return;
 
-            const result = await ScrapX.get('/api/v1/pincode/' + pincode);
+            const result = await ScrapTrading.get('/api/v1/pincode/' + pincode);
             if (!result.success || !result.data) return;
 
             const stateField = document.querySelector('[name="state_id"]');
@@ -246,7 +246,7 @@
             if (cityField && result.data.city_id) {
                 setTimeout(() => { cityField.value = result.data.city_id; }, 400);
             }
-            ScrapX.toast('Location filled from pincode: ' + (result.data.city || '') + ', ' + (result.data.state || ''), 'info');
+            ScrapTrading.toast('Location filled from pincode: ' + (result.data.city || '') + ', ' + (result.data.state || ''), 'info');
         });
     });
 
@@ -312,9 +312,9 @@
         const text = button.dataset.copy || document.querySelector(button.dataset.copyTarget || '')?.value || '';
         try {
             await navigator.clipboard.writeText(text);
-            ScrapX.toast('Copied to clipboard.', 'success');
+            ScrapTrading.toast('Copied to clipboard.', 'success');
         } catch (e) {
-            ScrapX.toast('Copy failed — select the text and copy manually.', 'warning');
+            ScrapTrading.toast('Copy failed — select the text and copy manually.', 'warning');
         }
     });
 
@@ -322,7 +322,7 @@
     document.querySelectorAll('[data-mark-read]').forEach((button) => {
         button.addEventListener('click', async (event) => {
             event.preventDefault();
-            const result = await ScrapX.post('/dashboard/notifications/read', { id: button.dataset.markRead || 0 });
+            const result = await ScrapTrading.post('/dashboard/notifications/read', { id: button.dataset.markRead || 0 });
             if (result.success) window.location.reload();
         });
     });

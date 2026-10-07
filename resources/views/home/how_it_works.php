@@ -6,7 +6,7 @@ View::section('content');
 ?>
 <section class="py-5 bg-teal-soft">
     <div class="container text-center">
-        <h1 class="h3 mb-2">How ScrapX works</h1>
+        <h1 class="h3 mb-2">How <?= e(site_name()) ?> works</h1>
         <p class="text-muted mb-0">
             From listing a lot to the final weighbridge settlement — every step happens on the platform,
             with a record both sides can point to.
@@ -62,7 +62,7 @@ View::section('content');
     <?php if (!empty($page) && !empty($page['content'])): ?>
         <hr class="my-5">
         <div class="cms-content">
-            <?= strip_tags((string) $page['content'], '<p><br><b><strong><i><em><ul><ol><li><h2><h3><h4><h5><a><blockquote><table><thead><tbody><tr><th><td><hr>') ?>
+            <?= cms_html($page['content'], '<p><br><b><strong><i><em><ul><ol><li><h2><h3><h4><h5><a><blockquote><table><thead><tbody><tr><th><td><hr>') ?>
         </div>
     <?php endif; ?>
 
@@ -72,7 +72,7 @@ View::section('content');
         <div class="col-md-4">
             <h6><i class="bi bi-shield-check text-teal me-2"></i>Why weighment matters</h6>
             <p class="small text-muted mb-0">
-                Scrap is sold on estimate and settled on fact. ScrapX records gross, tare and net weight
+                Scrap is sold on estimate and settled on fact. <?= e(site_name()) ?> records gross, tare and net weight
                 with the slip number and weighbridge name, then recalculates the order — so neither side
                 has to argue over a number nobody wrote down.
             </p>

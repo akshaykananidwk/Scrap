@@ -11,7 +11,7 @@ $items = $invoice['items'] ?? [];
 ?>
 <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
     <div>
-        <h2 class="h5 mb-1"><?= e((string) SettingsService::get('site_name', 'ScrapX')) ?></h2>
+        <h2 class="h5 mb-1"><?= e(site_name()) ?></h2>
         <div class="small text-muted">
             <?= nl2br(e((string) SettingsService::get('invoice_from_address', ''))) ?>
         </div>
@@ -167,6 +167,6 @@ $items = $invoice['items'] ?? [];
 
 <p class="small text-muted mt-4 mb-0">
     This is a computer-generated invoice raised through
-    <?= e((string) SettingsService::get('site_name', 'ScrapX')) ?>. The marketplace facilitates the
+    <?= e(site_name()) ?>. The marketplace facilitates the
     transaction; the supply contract is between the supplier and the recipient named above.
 </p>

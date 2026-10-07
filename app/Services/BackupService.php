@@ -145,7 +145,7 @@ final class BackupService
             throw new \RuntimeException('Could not open the dump file for writing.');
         }
 
-        fwrite($handle, "-- ScrapX database backup\n-- Generated: " . now() . " UTC\n\n");
+        fwrite($handle, "-- " . site_name() . " database backup\n-- Generated: " . now() . " UTC\n\n");
         fwrite($handle, "SET FOREIGN_KEY_CHECKS = 0;\n");
         fwrite($handle, "SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO';\n");
         fwrite($handle, "SET NAMES utf8mb4;\n\n");

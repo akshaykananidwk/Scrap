@@ -113,7 +113,7 @@ final class DemoSeeder
                 'name' => $businessName,
                 'slug' => slugify($businessName),
                 'business_type' => $businessType,
-                'about' => 'Demo business profile created by the ScrapX installer for evaluation purposes.',
+                'about' => 'Demo business profile created by the installer for evaluation purposes.',
                 'established_year' => random_int(1995, 2019),
                 'contact_person' => $name,
                 'contact_mobile' => $mobile,
@@ -279,7 +279,7 @@ final class DemoSeeder
                         'quantity' => $listing['quantity'],
                         'status' => 'winning',
                         'ip' => '127.0.0.1',
-                        'user_agent' => 'ScrapX Demo Seeder',
+                        'user_agent' => 'Demo Seeder',
                         'placed_at' => $placedAt,
                         'created_at' => substr($placedAt, 0, 19),
                     ]);

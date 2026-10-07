@@ -40,7 +40,11 @@ final class Response
 
     public static function redirect(string $to, int $status = 302): self
     {
-        $url = str_starts_with($to, 'http://') || str_starts_with($to, 'https://') ? $to : base_url($to);
+        // An internal redirect stays relative, so it lands on the host the
+        // visitor is actually using. An absolute Location built from a
+        // configured URL that disagrees with the request would bounce the
+        // visitor onto a different origin and drop their session with it.
+        $url = str_starts_with($to, 'http://') || str_starts_with($to, 'https://') ? $to : url($to);
         $response = new self('', $status);
         $response->headers['Location'] = $url;
         return $response;

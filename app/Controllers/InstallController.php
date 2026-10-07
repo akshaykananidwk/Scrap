@@ -25,7 +25,7 @@ final class InstallController extends Controller
     public function welcome(Request $request): Response
     {
         return $this->view('install/welcome', [
-            'title' => 'Install ScrapX',
+            'title' => 'Install ' . site_name(),
             'step' => 0,
             'php_version' => PHP_VERSION,
         ]);

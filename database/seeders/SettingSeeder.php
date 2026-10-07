@@ -15,7 +15,7 @@ final class SettingSeeder
     /** group => [key, value, type, label, description, is_public] */
     public const SETTINGS = [
         'general' => [
-            ['site_name', 'ScrapX', 'string', 'Site Name', 'Shown in the header, emails and invoices', 1],
+            ['site_name', 'Scraptrading', 'string', 'Site Name', 'Shown in the header, page titles, emails and invoices. CMS pages that contain {{site_name}} follow this value.', 1],
             ['site_tagline', "India's B2B Scrap Trading Marketplace", 'string', 'Tagline', '', 1],
             ['site_logo', '', 'string', 'Logo', 'Path inside /uploads', 1],
             ['site_favicon', '', 'string', 'Favicon', '', 1],
@@ -23,7 +23,7 @@ final class SettingSeeder
             ['contact_phone', '', 'string', 'Contact Phone', '', 1],
             ['whatsapp_number', '', 'string', 'WhatsApp Number', 'Used for the floating chat button', 1],
             ['contact_address', '', 'text', 'Registered Address', '', 1],
-            ['default_language', 'en', 'string', 'Default Language', 'en / hi / gu', 1],
+            ['default_language', 'en', 'string', 'Default Language', 'Used for visitors who have not chosen one. Members can override it in their profile.', 1],
             ['currency_code', 'INR', 'string', 'Currency Code', '', 1],
             ['currency_symbol', '₹', 'string', 'Currency Symbol', '', 1],
             ['timezone', 'Asia/Kolkata', 'string', 'Display Timezone', 'Data is stored in UTC', 0],
@@ -109,7 +109,7 @@ final class SettingSeeder
         'mail' => [
             ['mail_driver', 'mail', 'string', 'Mail driver', 'mail (PHP) or smtp', 0],
             ['mail_from_address', '', 'string', 'From address', '', 0],
-            ['mail_from_name', 'ScrapX', 'string', 'From name', '', 0],
+            ['mail_from_name', 'Scraptrading', 'string', 'From name', '', 0],
             ['smtp_host', '', 'string', 'SMTP host', '', 0],
             ['smtp_port', '587', 'integer', 'SMTP port', '', 0],
             ['smtp_username', '', 'string', 'SMTP username', '', 0],
@@ -174,7 +174,7 @@ final class SettingSeeder
             ['cron_last_run_at', '', 'string', 'Last scheduler run', '', 0],
         ],
         'seo' => [
-            ['seo_meta_title', 'ScrapX — B2B Scrap Trading, Auctions & RFQ Marketplace in India', 'string', 'Default meta title', '', 1],
+            ['seo_meta_title', 'Scraptrading — B2B Scrap Trading, Auctions & RFQ Marketplace in India', 'string', 'Default meta title', '', 1],
             ['seo_meta_description', 'Buy and sell iron, copper, aluminium, e-waste, plastic and paper scrap. Live auctions, buyer requirements, RFQs and verified businesses across India.', 'text', 'Default meta description', '', 1],
             ['seo_meta_keywords', 'scrap marketplace, scrap trading india, metal scrap, e-waste, scrap auction, scrap rates', 'text', 'Default keywords', '', 1],
             ['seo_og_image', '', 'string', 'Default social share image', '', 1],

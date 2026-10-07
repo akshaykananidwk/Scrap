@@ -27,7 +27,7 @@ API requires GSP credentials.
 - Transporter marketplace with freight bidding
 - Buyer credit scoring and terms
 - Native mobile apps on the existing REST API
-- Regional language coverage beyond Hindi and Gujarati
+- Regional language coverage beyond the seven shipped (Telugu, Kannada, Malayalam, Odia, Assamese)
 - Bulk listing upload for large yards
 - Advanced analytics: price forecasting from the rate history already collected
 

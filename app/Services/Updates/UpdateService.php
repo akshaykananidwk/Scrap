@@ -357,7 +357,7 @@ final class UpdateService
 
             // Sanity-check the package really is this application.
             if (!is_file($sourceDir . '/index.php') || !is_dir($sourceDir . '/app')) {
-                throw new UpdateException('The package does not look like a ScrapX release (index.php or app/ is missing).');
+                throw new UpdateException('The package does not look like a ' . site_name() . ' release (index.php or app/ is missing).');
             }
             $log('Validate package', true, 'Package structure verified');
 

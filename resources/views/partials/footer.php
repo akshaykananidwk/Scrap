@@ -4,7 +4,7 @@ use App\Core\Database;
 use App\Models\Category;
 use App\Services\SettingsService;
 
-$siteName = (string) SettingsService::get('site_name', 'ScrapX');
+$siteName = site_name();
 $footerPages = Database::instance()->select(
     'SELECT slug, title FROM cms_pages WHERE is_published = 1 AND show_in_footer = 1 ORDER BY sort_order LIMIT 12'
 );

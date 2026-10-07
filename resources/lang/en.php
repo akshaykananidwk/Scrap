@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 /**
  * English strings. Keys are flat and dot-namespaced.
- * Any key missing from hi.php or gu.php falls back to this file.
+ * Any key missing from a translation falls back to this file, so adding a
+ * language can never blank a page.
  */
 return [
     // Navigation

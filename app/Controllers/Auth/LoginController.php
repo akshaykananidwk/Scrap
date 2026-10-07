@@ -22,7 +22,7 @@ final class LoginController extends Controller
     {
         return $this->view('auth/login', [
             'title' => 'Sign in',
-            'meta_description' => 'Sign in to your ScrapX account to buy, sell, bid and manage orders.',
+            'meta_description' => 'Sign in to your ' . site_name() . ' account to buy, sell, bid and manage orders.',
         ]);
     }
 

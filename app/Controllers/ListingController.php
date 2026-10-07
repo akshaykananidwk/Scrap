@@ -101,7 +101,7 @@ final class ListingController extends Controller
             ],
             'whatsapp' => $listing['seller_mobile']
                 ? 'https://wa.me/91' . preg_replace('/\D/', '', (string) $listing['seller_mobile'])
-                    . '?text=' . rawurlencode('Hi, I am interested in your listing "' . $listing['title'] . '" on ' . SettingsService::get('site_name', 'ScrapX') . ': ' . base_url('listing/' . $listing['slug']))
+                    . '?text=' . rawurlencode('Hi, I am interested in your listing "' . $listing['title'] . '" on ' . site_name() . ': ' . base_url('listing/' . $listing['slug']))
                 : null,
         ];
 

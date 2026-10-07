@@ -194,7 +194,7 @@ final class GitHubClient
             CURLOPT_TIMEOUT => 300,
             CURLOPT_CONNECTTIMEOUT => 20,
             CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_USERAGENT => 'ScrapX-Updater',
+            CURLOPT_USERAGENT => site_slug() . '-updater',
         ]);
         $ok = curl_exec($ch);
         $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -229,7 +229,7 @@ final class GitHubClient
             CURLOPT_TIMEOUT => 30,
             CURLOPT_CONNECTTIMEOUT => 12,
             CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_USERAGENT => 'ScrapX-Updater',
+            CURLOPT_USERAGENT => site_slug() . '-updater',
         ]);
         $body = curl_exec($ch);
         $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);

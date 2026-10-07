@@ -165,7 +165,7 @@ final class ExportService
         [$sql, $params] = self::query($dataset, $filters);
         $rows = Database::instance()->select($sql . ' LIMIT 50000', $params);
 
-        $filename = sprintf('scrapx_%s_%s.csv', $dataset, gmdate('Ymd_His'));
+        $filename = sprintf('%s_%s_%s.csv', site_slug(), $dataset, gmdate('Ymd_His'));
         $path = STORAGE_PATH . '/tmp/' . $filename;
         if (!is_dir(dirname($path))) {
             @mkdir(dirname($path), 0775, true);

@@ -66,7 +66,7 @@
 - Notification engine across web, email, SMS, WhatsApp and push behind one provider interface
 - REST API with bearer tokens
 - PWA with a conservative service worker that never caches prices
-- Three languages (English, Hindi, Gujarati) with automatic fallback
+- Seven languages (English, Hindi, Gujarati, Marathi, Bengali, Tamil, Punjabi) with automatic fallback to English
 - Mobile-first responsive UI with a bottom navigation bar
 
 ## Intentionally disabled until configured

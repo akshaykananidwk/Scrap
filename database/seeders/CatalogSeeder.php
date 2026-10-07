@@ -247,7 +247,7 @@ final class CatalogSeeder
             'hsn_id' => $hsnId,
             'default_gst_rate' => $gstRate,
             'meta_title' => $name . ' Price & Listings',
-            'meta_description' => sprintf('Current %s rates, live listings and verified buyers on ScrapX.', $name),
+            'meta_description' => sprintf('Current %s rates, live listings and verified buyers on %s.', $name, site_name()),
             'is_active' => 1,
             'sort_order' => $sort,
             'created_at' => now(),

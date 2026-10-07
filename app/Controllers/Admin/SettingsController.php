@@ -67,7 +67,7 @@ final class SettingsController extends Controller
         }
 
         $rows = Database::instance()->select(
-            'SELECT key_name, type FROM settings WHERE group_name = :g',
+            'SELECT key_name, type, label FROM settings WHERE group_name = :g',
             ['g' => $group]
         );
 
@@ -95,6 +95,19 @@ final class SettingsController extends Controller
                 }
                 if ($type === 'integer') {
                     $value = (int) $value;
+                }
+                // Settings with a fixed set of values are checked here too, not
+                // only in the dropdown: a hand-crafted POST must not be able to
+                // set a language the site has no translations for.
+                $choices = SettingsService::choices($key);
+                if ($choices !== [] && !array_key_exists((string) $value, $choices)) {
+                    flash('danger', sprintf(
+                        '"%s" is not a valid value for %s. Choose one of: %s.',
+                        (string) $value,
+                        (string) ($row['label'] ?? $key),
+                        implode(', ', array_keys($choices))
+                    ));
+                    return $this->redirect('/admin/settings?group=' . $group);
                 }
             }
 
@@ -140,8 +153,8 @@ final class SettingsController extends Controller
 
         $result = $provider->send(
             $to,
-            'ScrapX test email',
-            '<p>This is a test email from <strong>' . e((string) SettingsService::get('site_name', 'ScrapX')) . '</strong>.</p>'
+            site_name() . ' test email',
+            '<p>This is a test email from <strong>' . e(site_name()) . '</strong>.</p>'
             . '<p>If you are reading this, outgoing email is working. Sent at ' . fmt_dt(now()) . '.</p>'
         );
 

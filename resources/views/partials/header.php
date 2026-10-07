@@ -7,7 +7,7 @@ use App\Services\ChatService;
 use App\Services\NotificationService;
 use App\Services\SettingsService;
 
-$siteName = (string) SettingsService::get('site_name', 'ScrapX');
+$siteName = site_name();
 $logo = SettingsService::get('site_logo');
 $user = Auth::user();
 $unreadNotifications = $user !== null ? NotificationService::unreadCount((int) $user['id']) : 0;
@@ -52,7 +52,7 @@ $headerPages = Database::instance()->select(
         </div>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-white py-2">
+    <nav class="navbar navbar-expand-xl navbar-light bg-white py-2">
         <div class="container">
             <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="<?= e(url('/')) ?>">
                 <?php if ($logo): ?>
@@ -69,7 +69,7 @@ $headerPages = Database::instance()->select(
             </button>
 
             <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav mb-2 mb-xl-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle <?= active_nav('/buy') ?><?= active_nav('/scrap') ?>" href="#" data-bs-toggle="dropdown">
                             <?= e(__('nav.buy')) ?>
@@ -130,7 +130,7 @@ $headerPages = Database::instance()->select(
                     </li>
                 </ul>
 
-                <form class="d-flex me-lg-3 my-2 my-lg-0" action="<?= e(url('buy')) ?>" method="get" role="search">
+                <form class="d-flex me-xl-3 my-2 my-xl-0" action="<?= e(url('buy')) ?>" method="get" role="search">
                     <div class="input-group input-group-sm search-box">
                         <input class="form-control" type="search" name="q" placeholder="Search copper, HMS 1, PET…"
                                value="<?= e((string) ($_GET['q'] ?? '')) ?>" aria-label="Search listings">
@@ -138,12 +138,12 @@ $headerPages = Database::instance()->select(
                     </div>
                 </form>
 
-                <ul class="navbar-nav align-items-lg-center">
+                <ul class="navbar-nav align-items-xl-center">
                     <?php if ($user === null): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= e(url('login')) ?>"><?= e(__('nav.login')) ?></a>
                         </li>
-                        <li class="nav-item ms-lg-2">
+                        <li class="nav-item ms-xl-2">
                             <a class="btn btn-teal btn-sm px-3" href="<?= e(url('register')) ?>"><?= e(__('nav.register')) ?></a>
                         </li>
                     <?php else: ?>
@@ -167,7 +167,7 @@ $headerPages = Database::instance()->select(
                                 <?php endif; ?>
                             </a>
                         </li>
-                        <li class="nav-item dropdown ms-lg-2">
+                        <li class="nav-item dropdown ms-xl-2">
                             <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown">
                                 <?php if (!empty($user['avatar'])): ?>
                                     <img src="<?= e(upload_url((string) $user['avatar'])) ?>" class="rounded-circle" width="28" height="28" alt="">
@@ -217,6 +217,26 @@ $headerPages = Database::instance()->select(
                         </li>
                     <?php endif; ?>
                 </ul>
+
+                <?php // The language switcher in the top bar is desktop-only, and most
+                      // traders here are on a phone — so the drawer carries its own. ?>
+                <form method="post" action="<?= e(url('language')) ?>" class="d-xl-none border-top pt-3 mt-2">
+                    <?= csrf_field() ?>
+                    <label class="form-label small text-muted mb-1" for="mobileLocale">
+                        <i class="bi bi-translate me-1"></i>Language / भाषा
+                    </label>
+                    <select id="mobileLocale" name="locale" class="form-select form-select-sm"
+                            onchange="this.form.submit()">
+                        <?php foreach (Lang::SUPPORTED as $code => $label): ?>
+                            <option value="<?= e($code) ?>" <?= Lang::locale() === $code ? 'selected' : '' ?>>
+                                <?= e($label) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <noscript>
+                        <button class="btn btn-sm btn-outline-teal w-100 mt-2" type="submit">Change language</button>
+                    </noscript>
+                </form>
             </div>
         </div>
     </nav>

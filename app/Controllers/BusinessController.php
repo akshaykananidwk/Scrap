@@ -79,7 +79,7 @@ final class BusinessController extends Controller
             'title' => $business['name'] . ' — ' . label((string) $business['business_type'])
                 . ($business['city_name'] ? ' in ' . $business['city_name'] : ''),
             'meta_description' => mb_substr(
-                strip_tags((string) ($business['about'] ?: $business['name'] . ' is a verified scrap business on ScrapX.')),
+                strip_tags((string) ($business['about'] ?: $business['name'] . ' is a verified scrap business on ' . site_name() . '.')),
                 0,
                 280
             ),

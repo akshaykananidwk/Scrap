@@ -107,7 +107,8 @@ final class Router
                 ? (string) $params[$key]
                 : '{' . $key . ($constraint === '' ? '' : ':' . $constraint) . '}'
         );
-        return base_url(ltrim($uri, '/'));
+        // Root-relative, like url(), so a named route is a safe form action too.
+        return url(ltrim($uri, '/'));
     }
 
     public function match(string $method, string $path): ?array

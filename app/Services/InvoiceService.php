@@ -210,7 +210,7 @@ final class InvoiceService
                 'invoice_type' => 'commission',
                 'seller_id' => (int) $db->scalar('SELECT id FROM users ORDER BY id LIMIT 1', [], 1),
                 'buyer_id' => $userId,
-                'seller_name' => (string) SettingsService::get('site_name', 'ScrapX'),
+                'seller_name' => site_name(),
                 'seller_gstin' => (string) SettingsService::get('platform_gstin', ''),
                 'seller_address' => (string) SettingsService::get('contact_address', ''),
                 'seller_state_code' => $platformStateCode,

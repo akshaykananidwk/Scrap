@@ -58,7 +58,7 @@ $prefs = json_decode((string) ($user['notification_preferences'] ?? '{}'), true)
                         <div class="col-md-6">
                             <label class="form-label" for="preferred_language">Preferred language</label>
                             <select id="preferred_language" name="preferred_language" class="form-select">
-                                <?php foreach (['en' => 'English', 'hi' => 'हिन्दी', 'gu' => 'ગુજરાતી'] as $value => $label): ?>
+                                <?php foreach (App\Core\Lang::SUPPORTED as $value => $label): ?>
                                     <option value="<?= e($value) ?>" <?= old('preferred_language', $user['preferred_language'] ?? 'en') === $value ? 'selected' : '' ?>>
                                         <?= e($label) ?>
                                     </option>

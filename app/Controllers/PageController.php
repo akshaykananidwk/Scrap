@@ -23,7 +23,7 @@ final class PageController extends Controller
         }
 
         return $this->view('cms/page', [
-            'title' => $page['meta_title'] ?: $page['title'],
+            'title' => cms_text($page['meta_title'] ?: $page['title']),
             'meta_description' => $page['meta_description'],
             'canonical' => base_url('page/' . $page['slug']),
             'page' => $page,
@@ -42,7 +42,7 @@ final class PageController extends Controller
 
         return $this->view('cms/faq', [
             'title' => 'Frequently Asked Questions',
-            'meta_description' => 'Answers about registering, KYC, auctions, weighment, payments and commission on ScrapX.',
+            'meta_description' => 'Answers about registering, KYC, auctions, weighment, payments and commission on ' . site_name() . '.',
             'canonical' => base_url('faq'),
             'grouped' => $grouped,
             'structured_data' => [
@@ -50,8 +50,8 @@ final class PageController extends Controller
                 '@type' => 'FAQPage',
                 'mainEntity' => array_map(static fn (array $faq): array => [
                     '@type' => 'Question',
-                    'name' => $faq['question'],
-                    'acceptedAnswer' => ['@type' => 'Answer', 'text' => strip_tags((string) $faq['answer'])],
+                    'name' => cms_text($faq['question']),
+                    'acceptedAnswer' => ['@type' => 'Answer', 'text' => cms_html($faq['answer'], '')],
                 ], $faqs),
             ],
         ]);
@@ -62,7 +62,7 @@ final class PageController extends Controller
         $page = Database::instance()->first("SELECT * FROM cms_pages WHERE slug = 'contact' AND is_published = 1");
         return $this->view('cms/contact', [
             'title' => 'Contact Us',
-            'meta_description' => 'Get in touch with the ScrapX team for sales, verification or support.',
+            'meta_description' => 'Get in touch with the ' . site_name() . ' team for sales, verification or support.',
             'canonical' => base_url('contact'),
             'page' => $page,
         ]);

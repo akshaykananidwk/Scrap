@@ -15,7 +15,23 @@ final class Lang
     private static string $locale = 'en';
     private static array $fallback = [];
 
-    public const SUPPORTED = ['en' => 'English', 'hi' => 'हिन्दी', 'gu' => 'ગુજરાતી'];
+    /**
+     * The languages the interface ships in, each label written in its own
+     * script so a trader can find their language without reading English.
+     *
+     * Adding one means adding resources/lang/{code}.php and a line here —
+     * the switcher, the profile preference, the admin default and the
+     * validation rules all read this list, so nothing else needs touching.
+     */
+    public const SUPPORTED = [
+        'en' => 'English',
+        'hi' => 'हिन्दी',
+        'gu' => 'ગુજરાતી',
+        'mr' => 'मराठी',
+        'bn' => 'বাংলা',
+        'ta' => 'தமிழ்',
+        'pa' => 'ਪੰਜਾਬੀ',
+    ];
 
     public static function boot(): void
     {

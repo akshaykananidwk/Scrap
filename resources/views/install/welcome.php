@@ -6,7 +6,7 @@ View::section('content');
 ?>
 <div class="card border-0 shadow-sm">
     <div class="card-body p-4">
-        <h1 class="h4 mb-3">Welcome to the ScrapX installer</h1>
+        <h1 class="h4 mb-3">Welcome to the <?= e(site_name()) ?> installer</h1>
         <p>
             This wizard sets up your B2B scrap trading marketplace. It creates the database schema,
             seeds categories, materials, units, states and settings, and creates your administrator

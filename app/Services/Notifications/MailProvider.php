@@ -62,7 +62,7 @@ final class MailProvider implements ChannelProvider
         }
 
         $fromAddress = (string) SettingsService::get('mail_from_address', '');
-        $fromName = (string) SettingsService::get('mail_from_name', 'ScrapX');
+        $fromName = (string) SettingsService::get('mail_from_name', site_name());
         $html = $this->wrap($subject, $body);
 
         if (SettingsService::get('mail_driver', 'mail') === 'smtp') {
@@ -74,7 +74,7 @@ final class MailProvider implements ChannelProvider
             'Content-Type: text/html; charset=UTF-8',
             'From: ' . $this->encodeName($fromName) . ' <' . $fromAddress . '>',
             'Reply-To: ' . $fromAddress,
-            'X-Mailer: ScrapX',
+            'X-Mailer: ' . site_name(),
         ];
         $ok = @mail($recipient, $this->encodeSubject($subject), $html, implode("\r\n", $headers));
         return $ok
@@ -212,7 +212,7 @@ final class MailProvider implements ChannelProvider
     /** Wrap the template body in a responsive shell so every email looks the same. */
     private function wrap(string $subject, string $body): string
     {
-        $siteName = e((string) SettingsService::get('site_name', 'ScrapX'));
+        $siteName = e(site_name());
         $year = gmdate('Y');
         $url = base_url('/');
         return <<<HTML

@@ -3,7 +3,7 @@
 use App\Core\View;
 use App\Services\SettingsService;
 
-$siteName = (string) SettingsService::get('site_name', 'ScrapX');
+$siteName = site_name();
 $logo = SettingsService::get('site_logo');
 ?><!doctype html>
 <html lang="<?= e(App\Core\Lang::locale()) ?>">

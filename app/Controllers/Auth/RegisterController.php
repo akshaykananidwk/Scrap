@@ -78,7 +78,7 @@ final class RegisterController extends Controller
                 ['g' => $gstin]
             );
             if ($existingGstin !== null) {
-                flash('danger', 'That GSTIN is already registered on ScrapX. Contact support if this is your business.');
+                flash('danger', 'That GSTIN is already registered on ' . site_name() . '. Contact support if this is your business.');
                 \App\Core\Session::flashInput($request->all());
                 return $this->redirect('/register');
             }
@@ -146,7 +146,7 @@ final class RegisterController extends Controller
         FraudService::evaluate($userId);
 
         NotificationService::dispatch($userId, 'welcome', [
-            'body' => 'Your ScrapX account is ready. Complete KYC to unlock verified badges and restricted auctions.',
+            'body' => 'Your ' . site_name() . ' account is ready. Complete KYC to unlock verified badges and restricted auctions.',
             'link' => '/dashboard',
             'vars' => ['name' => (string) $request->input('full_name')],
         ]);
@@ -168,7 +168,7 @@ final class RegisterController extends Controller
             return $this->redirect('/verify/mobile');
         }
 
-        flash('success', 'Welcome to ScrapX. Your account is ready.');
+        flash('success', 'Welcome to ' . site_name() . '. Your account is ready.');
         return $this->redirect('/dashboard');
     }
 

@@ -130,7 +130,7 @@
 
     async function poll() {
         try {
-            const state = await window.ScrapX.get(stateUrl);
+            const state = await window.ScrapTrading.get(stateUrl);
             applyState(state);
             failures = 0;
         } catch (e) {
@@ -170,23 +170,23 @@
         }
 
         // Explicit confirmation: a bid is binding.
-        const confirmMessage = 'Place a binding bid of ' + window.ScrapX.money(amount) + '?';
+        const confirmMessage = 'Place a binding bid of ' + window.ScrapTrading.money(amount) + '?';
         if (!window.confirm(confirmMessage)) return;
 
         el.submit.disabled = true;
         el.submit.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Placing bid…';
 
-        const result = await window.ScrapX.post(bidUrl, { amount });
+        const result = await window.ScrapTrading.post(bidUrl, { amount });
 
         el.submit.disabled = false;
         el.submit.innerHTML = '<i class="bi bi-hammer me-1"></i>Place bid';
 
         if (result.ok && result.success !== false) {
             showFeedback(result.message || 'Bid placed.', 'success');
-            window.ScrapX.toast(result.message || 'Bid placed.', 'success');
+            window.ScrapTrading.toast(result.message || 'Bid placed.', 'success');
             if (result.state) applyState(result.state);
             if (result.extended) {
-                window.ScrapX.toast('The auction was extended because your bid landed near the close.', 'info');
+                window.ScrapTrading.toast('The auction was extended because your bid landed near the close.', 'info');
             }
         } else {
             showFeedback(result.message || result.error || 'Your bid could not be placed.', 'danger');

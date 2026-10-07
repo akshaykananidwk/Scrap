@@ -5,7 +5,7 @@ use App\Core\Database;
 use App\Core\View;
 use App\Services\SettingsService;
 
-$siteName = (string) SettingsService::get('site_name', 'ScrapX');
+$siteName = site_name();
 
 // Live counters so staff see what needs attention without navigating.
 $pendingKyc = (int) Database::instance()->scalar("SELECT COUNT(*) FROM kyc_verifications WHERE status IN ('pending','under_review')", [], 0);
@@ -84,11 +84,15 @@ $nav = [
         <button class="btn btn-sm btn-outline-light d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminNav">
             <i class="bi bi-list"></i>
         </button>
-        <a class="navbar-brand fw-bold mb-0 d-flex align-items-center gap-2" href="<?= e(url('admin')) ?>">
-            <i class="bi bi-shield-lock"></i>
-            <span><?= e($siteName) ?> <span class="fw-normal opacity-75">Admin</span></span>
+        <?php // The site name is whatever the operator chose, so the brand has to be the
+              // part that gives way on a narrow screen: it shrinks and truncates while
+              // the menu button and account controls keep their size. ?>
+        <a class="navbar-brand fw-bold mb-0 d-flex align-items-center gap-2 min-w-0 me-0"
+           href="<?= e(url('admin')) ?>" title="<?= e($siteName) ?> Admin">
+            <i class="bi bi-shield-lock flex-shrink-0"></i>
+            <span class="text-truncate"><?= e($siteName) ?> <span class="fw-normal opacity-75">Admin</span></span>
         </a>
-        <div class="ms-auto d-flex align-items-center gap-2">
+        <div class="ms-auto d-flex align-items-center gap-2 flex-shrink-0">
             <a class="btn btn-sm btn-outline-light" href="<?= e(url('/')) ?>" target="_blank" rel="noopener">
                 <i class="bi bi-box-arrow-up-right me-1"></i><span class="d-none d-md-inline">View site</span>
             </a>

@@ -3,9 +3,13 @@
 use App\Core\View;
 use App\Services\SettingsService;
 
-$siteName = (string) SettingsService::get('site_name', 'ScrapX');
-$pageTitle = $title ?? $siteName;
-$metaDescription = $meta_description ?? SettingsService::get('seo_meta_description', '');
+$siteName = site_name();
+// Titles and meta descriptions can come from administrator-edited content (CMS
+// pages, material SEO text), so they may carry the {{site_name}} placeholder.
+// Resolving it here covers <title>, the description and both social cards at
+// once, instead of at every controller that sets them.
+$pageTitle = cms_text($title ?? $siteName);
+$metaDescription = cms_text($meta_description ?? SettingsService::get('seo_meta_description', ''));
 $indexable = SettingsService::bool('seo_indexing_enabled', true);
 ?><!doctype html>
 <html lang="<?= e(App\Core\Lang::locale()) ?>">

@@ -1,6 +1,6 @@
 <?php
 /**
- * ScrapX — B2B Scrap Trading Marketplace
+ * Scraptrading — B2B Scrap Trading Marketplace
  * Single front controller. Every request that is not a real file lands here.
  */
 

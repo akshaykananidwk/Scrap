@@ -57,7 +57,7 @@
         });
 
         if (!valid) {
-            window.ScrapX.toast('Please complete the highlighted fields before continuing.', 'warning');
+            window.ScrapTrading.toast('Please complete the highlighted fields before continuing.', 'warning');
             step.querySelector('.is-invalid')?.focus();
         }
         return valid;
@@ -83,7 +83,7 @@
             ['Quantity', value('quantity') + ' ' + value('unit_id')],
             ['Minimum order', value('min_order_quantity')],
             ['Sale method', value('listing_type')],
-            ['Price', value('price') ? window.ScrapX.money(value('price')) + ' (' + value('price_basis') + ')' : 'On request'],
+            ['Price', value('price') ? window.ScrapTrading.money(value('price')) + ' (' + value('price_basis') + ')' : 'On request'],
             ['GST', value('gst_rate') ? value('gst_rate') + '%' : '—'],
             ['Condition', value('material_condition')],
             ['Location', [value('city_id'), value('state_id'), value('pincode')].filter(Boolean).join(', ')],

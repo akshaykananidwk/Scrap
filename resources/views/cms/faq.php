@@ -15,13 +15,13 @@ View::section('content');
                     <h3 class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#q<?= (int) $faq['id'] ?>">
-                            <?= e((string) $faq['question']) ?>
+                            <?= e(cms_text($faq['question'])) ?>
                         </button>
                     </h3>
                     <div id="q<?= (int) $faq['id'] ?>" class="accordion-collapse collapse"
                          data-bs-parent="#faq-<?= e(slugify((string) $category)) ?>">
                         <div class="accordion-body small">
-                            <?= strip_tags((string) $faq['answer'], '<p><br><ul><ol><li><strong><em><a><code>') ?>
+                            <?= cms_html($faq['answer'], '<p><br><ul><ol><li><strong><em><a><code>') ?>
                         </div>
                     </div>
                 </div>

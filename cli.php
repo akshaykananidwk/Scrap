@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * ScrapX command line helper.
+ * Scraptrading command line helper.
  *
  * The application does NOT require this file to install or update — the web
  * installer at /install and the admin updater do everything. It exists for
@@ -122,7 +122,7 @@ try {
                 'pass' => getenv('DB_PASS') ?: '',
             ];
             $app = [
-                'site_name' => getenv('SITE_NAME') ?: 'ScrapX',
+                'site_name' => getenv('SITE_NAME') ?: 'Scraptrading',
                 'site_url' => getenv('SITE_URL') ?: 'http://localhost:8000',
                 'admin_name' => getenv('ADMIN_NAME') ?: 'Administrator',
                 'admin_email' => getenv('ADMIN_EMAIL') ?: 'admin@example.com',

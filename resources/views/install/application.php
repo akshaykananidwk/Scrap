@@ -15,7 +15,7 @@ View::section('content');
                 <div class="col-md-6">
                     <label class="form-label required" for="site_name">Site name</label>
                     <input id="site_name" name="site_name" class="form-control" required
-                           value="<?= e((string) ($saved['site_name'] ?? old('site_name', 'ScrapX'))) ?>">
+                           value="<?= e((string) ($saved['site_name'] ?? old('site_name', 'Scraptrading'))) ?>">
                 </div>
                 <div class="col-md-6">
                     <label class="form-label required" for="site_url">Site URL</label>

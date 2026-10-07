@@ -78,7 +78,7 @@ final class OtpService
         $vars = [
             'code' => $code,
             'minutes' => $expiryMinutes,
-            'site_name' => (string) SettingsService::get('site_name', 'ScrapX'),
+            'site_name' => site_name(),
         ];
 
         $delivered = self::deliver($channel, $destination, $vars, $userId);

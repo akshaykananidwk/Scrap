@@ -1,6 +1,6 @@
-# ScrapX — Architecture
+# Scraptrading — Architecture
 
-ScrapX is a B2B scrap trading, buying, selling, RFQ and auction marketplace for India.
+Scraptrading is a B2B scrap trading, buying, selling, RFQ and auction marketplace for India.
 It is a dependency-free PHP 8.2+ / MySQL 8 (MariaDB 10.5+) application designed to run on
 ordinary Apache shared hosting: upload the files, open `/install`, done. No Composer,
 no Node.js, no SSH required for installation or updates.

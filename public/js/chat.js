@@ -47,7 +47,7 @@
 
     async function poll() {
         try {
-            const result = await window.ScrapX.get(
+            const result = await window.ScrapTrading.get(
                 '/dashboard/messages/' + conversationId + '/poll?after=' + lastId
             );
             if (result.success && Array.isArray(result.messages) && result.messages.length > 0) {
@@ -88,7 +88,7 @@
         const button = form.querySelector('button[type="submit"]');
         if (button) button.disabled = true;
 
-        const result = await window.ScrapX.post(
+        const result = await window.ScrapTrading.post(
             '/dashboard/messages/' + conversationId,
             formData
         );
@@ -106,7 +106,7 @@
             lastId = result.last_id || lastId;
             scrollToBottom();
         } else {
-            window.ScrapX.toast(result.error || 'Message could not be sent.', 'danger');
+            window.ScrapTrading.toast(result.error || 'Message could not be sent.', 'danger');
         }
     });
 

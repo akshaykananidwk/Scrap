@@ -29,6 +29,70 @@ if (!function_exists('setting')) {
     }
 }
 
+if (!function_exists('site_name')) {
+    /**
+     * The platform's own name, as the operator set it in Admin → Settings.
+     *
+     * It appears in the header, page titles, emails, invoices and SMS, so it
+     * lives in exactly one place: an operator who renames the site renames it
+     * everywhere, and no page is left showing the name it shipped with.
+     */
+    function site_name(): string
+    {
+        $name = trim((string) App\Services\SettingsService::get('site_name', ''));
+        return $name !== '' ? $name : 'Scraptrading';
+    }
+}
+
+if (!function_exists('site_slug')) {
+    /**
+     * The site name reduced to something safe to put in a filename.
+     *
+     * A name written in Devanagari or Gujarati slugifies to nothing, which would
+     * leave a download called `_users_20260101.csv`, so fall back to a fixed
+     * word rather than emitting a filename that starts with a separator.
+     */
+    function site_slug(): string
+    {
+        $slug = slugify(site_name(), 40);
+        return $slug !== '' ? $slug : 'scrap';
+    }
+}
+
+if (!function_exists('cms_text')) {
+    /**
+     * Substitute `{{site_name}}` in a plain-text CMS field (a page title, an FAQ
+     * question). The caller still escapes the result — this only fills in the
+     * name, so a heading reads "Is Scraptrading free to use?" rather than
+     * showing the placeholder to visitors.
+     */
+    function cms_text(?string $text): string
+    {
+        return str_replace(['{{site_name}}', '{{ site_name }}'], site_name(), (string) $text);
+    }
+}
+
+if (!function_exists('cms_html')) {
+    /**
+     * Prepare administrator-authored HTML (CMS pages, FAQ answers) for display.
+     *
+     * `{{site_name}}` is substituted here rather than when the text is seeded,
+     * so the Terms, About and policy pages follow the name in Admin → Settings
+     * instead of freezing whatever the site was called on the day it was set up.
+     * The substitution runs before tags are stripped, so a name cannot smuggle
+     * markup into the page.
+     */
+    function cms_html(?string $html, string $allowedTags): string
+    {
+        $replaced = str_replace(
+            ['{{site_name}}', '{{ site_name }}'],
+            e(site_name()),
+            (string) $html
+        );
+        return strip_tags($replaced, $allowedTags);
+    }
+}
+
 if (!function_exists('__')) {
     function __(string $key, array $replace = []): string
     {
@@ -88,9 +152,21 @@ if (!function_exists('base_path')) {
 }
 
 if (!function_exists('url')) {
+    /**
+     * A link to somewhere on this site, root-relative on purpose.
+     *
+     * An in-site link and a form's action are always served by the same site as
+     * the page they sit on, so giving them an absolute origin only creates a way
+     * for the two to disagree — and under `form-action 'self'` a disagreement is
+     * not cosmetic: the browser silently refuses to submit the form. A relative
+     * target cannot disagree with the page it came from.
+     *
+     * Use base_url() for anything that leaves the page: emails, the sitemap,
+     * canonical and Open Graph tags.
+     */
     function url(string $path = ''): string
     {
-        return base_url($path);
+        return base_path() . '/' . ltrim($path, '/');
     }
 }
 

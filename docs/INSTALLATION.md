@@ -1,6 +1,6 @@
 # Installation
 
-ScrapX installs through a browser. You do **not** need SSH, Composer, Node.js or a build step.
+Scraptrading installs through a browser. You do **not** need SSH, Composer, Node.js or a build step.
 
 ## Requirements
 
@@ -47,11 +47,11 @@ files, so leave it writable if you intend to use it.
 
 In cPanel (or your host's panel) create:
 
-1. A database, e.g. `myuser_scrapx`
+1. A database, e.g. `myuser_scraptrading`
 2. A database user with a strong password
 3. Grant that user **all privileges** on the database
 
-Keep the name, user and password to hand. ScrapX does not need `CREATE DATABASE` rights — it only
+Keep the name, user and password to hand. Scraptrading does not need `CREATE DATABASE` rights — it only
 needs to work inside a database you have already created.
 
 ## 4. Run the installer
@@ -64,7 +64,7 @@ The wizard has six steps:
 2. **Requirements** — a live check of PHP version, extensions and folder permissions
 3. **Database** — connection details, tested before it continues
 4. **Application** — site name, URL, timezone, administrator account
-5. **Run** — writes `config.php`, applies 13 migrations (84 tables), seeds roles, permissions,
+5. **Run** — writes `config.php`, applies 14 migrations (84 tables), seeds roles, permissions,
    settings, 36 states, cities, 23 categories, 104 materials, CMS pages, FAQs, notification
    templates and scheduler jobs, then creates your administrator
 6. **Complete** — next steps
@@ -107,7 +107,7 @@ Admin → System health tells you at a glance whether the scheduler is running.
 If you do have shell access:
 
 ```bash
-DB_NAME=scrapx DB_USER=scrapx DB_PASS=secret DB_HOST=127.0.0.1 \
+DB_NAME=scraptrading DB_USER=scraptrading DB_PASS=secret DB_HOST=127.0.0.1 \
 ADMIN_EMAIL=you@example.com ADMIN_MOBILE=9876543210 ADMIN_PASSWORD='Strong@123' \
 SITE_URL=https://yourdomain.com DEMO_DATA=0 \
 php cli.php install

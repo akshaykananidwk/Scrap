@@ -15,7 +15,7 @@ final class ApiController extends BaseApiController
     public function index(Request $request): Response
     {
         return $this->data([
-            'name' => (string) SettingsService::get('site_name', 'ScrapX') . ' API',
+            'name' => site_name() . ' API',
             'version' => 'v1',
             'application_version' => InstallService::readVersion(),
             'authentication' => 'Bearer token — create one in Dashboard → Security.',

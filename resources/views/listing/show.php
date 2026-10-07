@@ -492,7 +492,7 @@ document.getElementById('reveal-contact')?.addEventListener('click', async funct
     this.disabled = true;
     this.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Loading…';
 
-    const result = await window.ScrapX.get(this.dataset.url);
+    const result = await window.ScrapTrading.get(this.dataset.url);
     this.classList.add('d-none');
 
     if (result.success && result.seller) {
@@ -508,7 +508,7 @@ document.getElementById('reveal-contact')?.addEventListener('click', async funct
         this.classList.remove('d-none');
         this.disabled = false;
         this.innerHTML = '<i class="bi bi-telephone me-1"></i>Show contact details';
-        window.ScrapX.toast(result.error || 'Could not load contact details.', 'danger');
+        window.ScrapTrading.toast(result.error || 'Could not load contact details.', 'danger');
     }
 });
 </script>

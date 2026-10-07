@@ -1,4 +1,4 @@
-# ScrapX — Apache configuration (shared hosting friendly)
+# Scraptrading — Apache configuration (shared hosting friendly)
 
 <IfModule mod_rewrite.c>
     RewriteEngine On

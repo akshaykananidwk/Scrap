@@ -62,7 +62,7 @@ final class SmsProvider implements ChannelProvider
             CURLOPT_CONNECTTIMEOUT => 8,
             CURLOPT_FOLLOWLOCATION => false,
             CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_USERAGENT => 'ScrapX/1.0',
+            CURLOPT_USERAGENT => site_slug() . '/1.0',
         ]);
         $response = curl_exec($ch);
         $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);

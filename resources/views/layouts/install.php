@@ -9,7 +9,7 @@ $current = (int) ($step ?? 0);
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= e($title ?? 'Install') ?> | ScrapX Installer</title>
+    <title><?= e($title ?? 'Install') ?> | <?= e(site_name()) ?> Installer</title>
     <meta name="robots" content="noindex, nofollow">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -32,7 +32,7 @@ $current = (int) ($step ?? 0);
     <div class="text-center mb-4">
         <div class="d-inline-flex align-items-center gap-2">
             <span class="brand-mark"><i class="bi bi-recycle"></i></span>
-            <span class="h4 mb-0 fw-bold" style="color:#0f766e">ScrapX Installer</span>
+            <span class="h4 mb-0 fw-bold" style="color:#0f766e"><?= e(site_name()) ?> Installer</span>
         </div>
         <p class="text-muted small mt-2 mb-0">B2B Scrap Trading, Auction &amp; RFQ Marketplace</p>
     </div>

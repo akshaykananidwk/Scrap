@@ -1,4 +1,4 @@
-/* ScrapX — application styles (layered on Bootstrap 5) */
+/* Scraptrading — application styles (layered on Bootstrap 5) */
 
 :root {
     --teal: #0f766e;
@@ -71,6 +71,34 @@ a:hover { color: var(--teal-dark); }
 .navbar .nav-link { font-weight: 500; color: #334155; }
 .navbar .nav-link.active { color: var(--teal); font-weight: 600; }
 .search-box { min-width: 220px; }
+.brand-mark { flex: 0 0 auto; }
+
+/* Once the navbar is a single row it has to hold the brand, the category menu,
+   the search box and the account controls at the same time — and the brand is
+   the site name the operator chose, which can be any length. Measured, that row
+   needs about 1200px, which is why the header expands at xl rather than lg: in
+   the 992–1199px band everything stays in the drawer, where the search box gets
+   the full width instead of being squeezed to a few pixels.
+   Scoped to the breakpoint where the row is horizontal — below it the collapse
+   stacks vertically, where a flex-basis would stretch the search box's height. */
+@media (min-width: 1200px) {
+    /* The search box does the giving way: it grows into spare room and shrinks
+       when there is none, so the brand and the menus keep their natural size. */
+    /* No auto margins in this row: an auto margin eats the free space before
+       flex-grow sees it, which left the search box stuck at its smallest size
+       on a wide screen. The search box does the spacing instead. */
+    .navbar-expand-xl form[role="search"] { flex: 1 1 8rem; min-width: 0; max-width: 22rem; }
+    .navbar-expand-xl form[role="search"] .search-box { min-width: 0; width: 100%; }
+    .navbar-expand-xl form[role="search"] .form-control { min-width: 0; }
+
+    /* The brand holds its full width until it would take more than a third of
+       the bar — the limit only a very long site name reaches, and then it
+       ellipsises instead of pushing the page sideways. */
+    .navbar-expand-xl .navbar-brand { flex: 0 0 auto; min-width: 0; max-width: 34%; }
+    .navbar-expand-xl .navbar-brand > span:not(.brand-mark) {
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+}
 
 .mega-menu { min-width: min(720px, 92vw); padding: .75rem; }
 

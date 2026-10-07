@@ -65,6 +65,24 @@ final class SettingsService
         return $value;
     }
 
+    /**
+     * The valid values for a setting that only accepts a fixed set, as
+     * value => label. The admin form renders these as a dropdown and the save
+     * handler rejects anything outside them, so a mistyped language code cannot
+     * leave the site falling back to English with no explanation.
+     *
+     * An empty array means the setting is free text.
+     *
+     * @return array<string, string>
+     */
+    public static function choices(string $key): array
+    {
+        return match ($key) {
+            'default_language' => \App\Core\Lang::SUPPORTED,
+            default => [],
+        };
+    }
+
     public static function bool(string $key, bool $default = false): bool
     {
         $settings = self::load();
