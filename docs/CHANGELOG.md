@@ -2,6 +2,36 @@
 
 All notable changes are recorded here. Versions follow semantic versioning.
 
+## [1.2.0] — 2026-10-08
+
+### Added
+- **Help Centre** at `/help` — 48 step-by-step guides in seven categories:
+  Getting started, Selling, Buying, Orders &amp; weighment &amp; payment, Your account,
+  Operator setup and Running the platform. It covers the whole path from opening an account to
+  settling an order on weighbridge weight, and for operators every settings group, the scheduler,
+  email/SMS/WhatsApp, commission, GST, payments, backups and the GitHub updater.
+- Search across the guides, ranked so a title match beats a passing mention, with common words
+  ignored and near-ties resolved toward trading articles for traders and configuration articles
+  for staff.
+- `/help/print` — every guide on one page with a numbered contents list, laid out for printing or
+  saving as a PDF.
+- Help Centre links in the header top bar and "More" menu, the mobile drawer, the footer, the member
+  dashboard sidebar, and a **Guide** group in the admin sidebar linking straight to the setup and
+  operations manuals.
+- All 56 Help Centre URLs are listed in `sitemap.xml`.
+
+### Changed
+- Guide content lives in `resources/guide/{locale}/{category}.php` as structured blocks, so it ships
+  and is versioned with the code it documents, and a translation is a new directory rather than a
+  code change. Anything untranslated falls back to English per article, with a notice on the page.
+- `layouts/bare` now loads the application stylesheet and a favicon. The single-page guide uses the
+  application's own classes, and without the stylesheet it rendered unstyled.
+- The public navbar no longer lets menu labels wrap mid-phrase. Between 1200 and 1400px — where the
+  row cannot hold the brand name, seven menu items, a usable search box and the account controls at
+  once — the brand text gives way to its mark and returns above 1400px. Measured at 1200, 1280,
+  1366, 1440, 1600 and 1920px: no overflow, no wrapped label, no clipped brand, and a search box
+  between 170 and 195px at every width.
+
 ## [1.1.0] — 2026-10-07
 
 ### Changed

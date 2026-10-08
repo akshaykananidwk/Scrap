@@ -36,6 +36,11 @@ the same numbers, and the platform commission follows the settled value, not the
 
 ## Documentation
 
+The running site carries its own manual at **`/help`** — 48 step-by-step guides for traders and for
+whoever administers the platform, searchable, and available as one printable page at `/help/print`.
+It lives in `resources/guide/{locale}/` and ships with the code, so it stays in step with the screens
+it describes. The documents below are for people working on the codebase.
+
 | Document | For |
 |---|---|
 | [INSTALLATION.md](docs/INSTALLATION.md) | Installing and configuring |

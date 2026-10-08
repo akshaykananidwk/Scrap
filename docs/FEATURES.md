@@ -67,6 +67,7 @@
 - REST API with bearer tokens
 - PWA with a conservative service worker that never caches prices
 - Seven languages (English, Hindi, Gujarati, Marathi, Bengali, Tamil, Punjabi) with automatic fallback to English
+- Help Centre: 48 step-by-step guides covering trading and platform configuration, searchable, with a single printable page
 - Mobile-first responsive UI with a bottom navigation bar
 
 ## Intentionally disabled until configured

@@ -12,9 +12,9 @@ exercised, it is listed under *Not tested* with the reason.
 
 | Check | Result |
 |---|---|
-| `php -l` across every PHP file (282 files) | **Pass** — 0 parse errors |
+| `php -l` across every PHP file (303 files) | **Pass** — 0 parse errors |
 | View template parse check (`cli.php health`) | **Pass** — all 124 templates parse |
-| Routes registered | 302 |
+| Routes registered | 306 |
 
 ## 2. Installation
 
@@ -457,15 +457,36 @@ demo buyer who has.
 
 Ten faults were found by browser testing and fixed; they are listed in §8.
 
+## 9b. Help Centre
+
+Added after the browser testing above, and checked the same way.
+
+| Check | Result |
+|---|---|
+| Guides written | 48, across 7 categories |
+| Every guide reachable (`/help/{category}/{article}`) | 48 of 48 return 200 |
+| A category or article that does not exist | 404, not a 500 |
+| Single-page view (`/help/print`) | All 48 articles, 48 contents entries, 0 broken anchors |
+| Search ranking (12 queries incl. "pincode", "cronjob", "auctions not closing", "htaccess") | Correct article first in all 12 |
+| Sitemap | 56 Help Centre URLs listed |
+| Browser audit at 390px and 1280px, 17 Help URLs added | 0 problems |
+| Links in header, mobile drawer, footer, dashboard and admin sidebars | All present and resolving |
+| Site in Gujarati | Guide falls back to English with a notice; the rest of the interface stays translated |
+
+The guide content was written against the running application rather than from memory: setting keys,
+admin paths, the nine sell-wizard step names, the ten scheduled jobs and their intervals, the KYC
+document list, the order and auction state names and the weighment fields were each read out of the
+database or the source before being documented.
+
 ## 10. Summary
 
 | Metric | Value |
 |---|---|
-| PHP files | 282 |
-| Lines of PHP | 46,749 |
+| PHP files | 303 |
+| Lines of PHP | 50,439 |
 | Database tables | 84 |
-| Routes | 302 |
-| View templates | 124 |
+| Routes | 306 |
+| View templates | 131 |
 | Parse errors | 0 |
 | Pages returning non-200 in the final sweep | 0 |
 | Errors logged during the final sweep | 0 |
@@ -473,4 +494,5 @@ Ten faults were found by browser testing and fixed; they are listed in §8.
 | Browser page loads checked (67 URLs × 2 screen sizes) | 134 |
 | Browser problems remaining | 0 |
 | Interface languages | 7 |
+| Help Centre guides | 48 |
 | Database migrations | 14 |

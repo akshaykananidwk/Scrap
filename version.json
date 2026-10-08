@@ -1,9 +1,9 @@
 {
     "name": "Scraptrading",
-    "version": "1.1.0",
-    "release_date": "2026-10-07",
+    "version": "1.2.0",
+    "release_date": "2026-10-08",
     "commit": "",
-    "release_notes": "Renamed the platform to Scraptrading, with the name now taken from a single setting so it can be changed in the admin panel at any time. Added Marathi, Bengali, Tamil and Punjabi alongside English, Hindi and Gujarati, with a language switcher reachable on a phone. Fixed the route compiler dropping any route whose constraint contained a quantifier, which had disabled the pincode lookup, and made in-site links and form actions relative so Content-Security-Policy cannot block a form submission.",
+    "release_notes": "Added a Help Centre at /help: 48 step-by-step guides in seven categories, covering buying, selling, auctions, orders, weighment, payments and invoicing for traders, and installation, the scheduler and every settings group for whoever runs the platform. Searchable, readable on a phone, and available as one printable page. Guides are shipped with the code so they stay in step with the screens they describe, and the content is per-locale so translations can be added without a code change.",
     "minimum_php": "8.2.0",
     "database_version": "0014",
     "required_extensions": [

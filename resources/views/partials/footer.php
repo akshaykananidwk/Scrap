@@ -79,6 +79,11 @@ $whatsapp = preg_replace('/\D/', '', (string) SettingsService::get('whatsapp_num
                         </li>
                     <?php endforeach; ?>
                     <li><a class="link-secondary text-decoration-none" href="<?= e(url('contact')) ?>">Contact Us</a></li>
+                    <li>
+                        <a class="link-light text-decoration-none fw-semibold" href="<?= e(url('help')) ?>">
+                            <i class="bi bi-life-preserver me-1"></i>Help Centre
+                        </a>
+                    </li>
                 </ul>
 
                 <?php if ($address = SettingsService::get('contact_address')): ?>

@@ -87,17 +87,30 @@ a:hover { color: var(--teal-dark); }
     /* No auto margins in this row: an auto margin eats the free space before
        flex-grow sees it, which left the search box stuck at its smallest size
        on a wide screen. The search box does the spacing instead. */
-    .navbar-expand-xl form[role="search"] { flex: 1 1 8rem; min-width: 0; max-width: 22rem; }
+    /* A search box squeezed to a few pixels is not a search box, so it keeps a
+       usable floor and the brand truncates ahead of it. */
+    .navbar-expand-xl form[role="search"] { flex: 1 1 8rem; min-width: 8.5rem; max-width: 22rem; }
     .navbar-expand-xl form[role="search"] .search-box { min-width: 0; width: 100%; }
     .navbar-expand-xl form[role="search"] .form-control { min-width: 0; }
 
-    /* The brand holds its full width until it would take more than a third of
-       the bar — the limit only a very long site name reaches, and then it
-       ellipsises instead of pushing the page sideways. */
-    .navbar-expand-xl .navbar-brand { flex: 0 0 auto; min-width: 0; max-width: 34%; }
+    /* A menu label that breaks across two lines reads as a broken page, so the
+       links never wrap; the search box absorbs the squeeze instead, which is
+       what it is there for. */
+    .navbar-expand-xl .navbar-nav .nav-link { white-space: nowrap; }
+
+    /* Between 1200 and 1400 the row cannot hold the brand name, seven menu
+       items, a usable search box and the account controls at once. Something
+       has to go, and the least costly is the brand *text*: the mark stays, so
+       the site is still identified, and nothing is clipped or wrapped. The name
+       returns at xxl where there is room for it. */
+    .navbar-expand-xl .navbar-brand { flex: 0 1 auto; min-width: 0; max-width: 34%; }
     .navbar-expand-xl .navbar-brand > span:not(.brand-mark) {
         overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
+}
+
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+    .navbar-expand-xl .navbar-brand > span:not(.brand-mark) { display: none; }
 }
 
 .mega-menu { min-width: min(720px, 92vw); padding: .75rem; }
@@ -325,3 +338,95 @@ aside.admin-sidebar {
 /* Charts drawn with inline SVG — no chart library needed. */
 .spark-chart { width: 100%; height: 60px; display: block; }
 .line-chart { width: 100%; height: 220px; display: block; }
+
+/* ---------- Help Centre ---------- */
+
+/* Guide articles are long-form reading, so they get a comfortable measure and
+   looser line height than the dense screens elsewhere in the application. */
+.guide-article { max-width: 72ch; }
+.guide-text, .guide-list li, .guide-steps li, .guide-faq dd { line-height: 1.7; }
+.guide-text { margin-bottom: 1rem; }
+.guide-heading { scroll-margin-top: 5rem; }
+.guide-article code, .guide-print code {
+    background: #f1f5f9; border: 1px solid var(--line); border-radius: 4px;
+    padding: .1rem .35rem; font-size: .875em; color: #0f172a;
+    overflow-wrap: anywhere;
+}
+
+/* Numbered steps. The counter is drawn as a teal disc in the gutter so the
+   sequence stays obvious even when a step runs to several lines. */
+.guide-steps { list-style: none; counter-reset: guide-step; padding-left: 0; margin-bottom: 1.25rem; }
+.guide-steps > li {
+    counter-increment: guide-step;
+    position: relative; padding-left: 2.75rem; margin-bottom: 1rem;
+}
+.guide-steps > li::before {
+    content: counter(guide-step);
+    position: absolute; left: 0; top: .05rem;
+    width: 1.9rem; height: 1.9rem; border-radius: 50%;
+    background: var(--teal-soft); color: var(--teal-dark);
+    display: grid; place-items: center;
+    font-size: .8rem; font-weight: 700;
+}
+.guide-step-title { display: block; font-weight: 600; color: var(--ink); }
+.guide-step-text { display: block; color: #334155; }
+
+.guide-list { padding-left: 1.25rem; margin-bottom: 1.25rem; }
+.guide-list > li { margin-bottom: .5rem; }
+
+.guide-callout { border: 0; border-left: 3px solid currentColor; border-radius: 6px; }
+.guide-callout p:last-child { margin-bottom: 0; }
+
+.guide-table { font-size: .9rem; }
+.guide-table th, .guide-table td { padding: .55rem .65rem; }
+.guide-table tbody th { color: var(--ink); }
+
+.guide-faq { margin-bottom: 1.25rem; }
+.guide-faq dt { font-weight: 600; color: var(--ink); margin-top: 1rem; }
+.guide-faq dd { margin-left: 0; color: #334155; }
+
+.guide-code {
+    background: #0f172a; color: #e2e8f0; border-radius: var(--radius);
+    padding: .9rem 1rem; font-size: .85rem; line-height: 1.6;
+    overflow-x: auto; margin-bottom: 1.25rem; white-space: pre;
+}
+.guide-code code { background: none; border: 0; padding: 0; color: inherit; }
+
+.guide-cat-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: grid; place-items: center;
+    background: var(--teal-soft); color: var(--teal-dark); font-size: 1.1rem;
+}
+.guide-cat-icon-lg { width: 52px; height: 52px; font-size: 1.4rem; }
+.guide-cat-links a { color: #334155; }
+.guide-cat-links a:hover { color: var(--teal); }
+
+.guide-article-card { transition: box-shadow .15s ease, transform .15s ease; }
+.guide-article-card:hover { box-shadow: 0 .5rem 1rem rgba(15, 23, 42, .1) !important; transform: translateY(-1px); }
+.guide-article-number {
+    width: 2rem; height: 2rem; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--bg); border: 1px solid var(--line);
+    color: var(--muted); font-size: .8rem; font-weight: 700;
+}
+
+.guide-sidebar-articles { border-left: 2px solid var(--line); padding-left: .75rem; margin-left: .35rem; }
+
+@media (min-width: 992px) {
+    /* The contents list follows the reader down a long article. */
+    .guide-sidebar { position: sticky; top: 5rem; max-height: calc(100vh - 6rem); overflow-y: auto; }
+}
+
+/* The single-page guide is meant to be printed, so drop everything that only
+   makes sense on screen and let the text reflow to the paper. */
+@media print {
+    .guide-print { max-width: none; }
+    .guide-print .guide-article { max-width: none; }
+    .guide-print-article { page-break-inside: avoid; }
+    .guide-print h2 { page-break-after: avoid; }
+    .guide-print h3 { page-break-after: avoid; }
+    .guide-code { background: #fff; color: #000; border: 1px solid #999; white-space: pre-wrap; }
+    .guide-callout { border: 1px solid #999 !important; background: #fff !important; color: #000 !important; }
+    .guide-steps > li::before { background: #fff; border: 1px solid #333; color: #000; }
+    a { text-decoration: none; color: #000; }
+}

@@ -62,6 +62,14 @@ $nav = [
         ['/admin/audit', 'bi-list-check', 'Audit Log', null, 'view_audit_logs'],
         ['/admin/export', 'bi-download', 'Import / Export', null, 'view_users'],
     ]],
+
+    // The operator sections of the Help Centre are the setup and running
+    // manual, so they belong in the panel where that work is actually done.
+    ['Guide', [
+        ['/help/operator-setup', 'bi-sliders', 'Setup Guide', null, null],
+        ['/help/operator-running', 'bi-shield-lock', 'Running the Platform', null, null],
+        ['/help', 'bi-life-preserver', 'Full Help Centre', null, null],
+    ]],
 ];
 ?><!doctype html>
 <html lang="en">

@@ -56,6 +56,12 @@ $nav[] = ['Account', [
     ['/dashboard/wallet', 'bi-wallet2', 'Wallet', null],
     ['/dashboard/security', 'bi-shield-lock', 'Security & API', null],
 ]];
+
+// The Help Centre is a public page, but a trader stuck halfway through a deal
+// looks for it here rather than going back out to the marketing site.
+$nav[] = ['Help', [
+    ['/help', 'bi-life-preserver', 'Help Centre', null],
+]];
 ?><!doctype html>
 <html lang="<?= e(App\Core\Lang::locale()) ?>">
 <head>

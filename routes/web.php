@@ -69,6 +69,14 @@ $router->post('/report', [App\Controllers\BusinessController::class, 'report'])-
 // Pricing / plans
 $router->get('/pricing', [App\Controllers\HomeController::class, 'pricing'])->name('pricing');
 
+// Help Centre — the step-by-step manual. Public, because someone deciding
+// whether to register should be able to read how the platform works first.
+// `/help/print` is declared before `/help/{category}` so the literal wins.
+$router->get('/help', [App\Controllers\HelpController::class, 'index'])->name('help');
+$router->get('/help/print', [App\Controllers\HelpController::class, 'printAll'])->name('help_print');
+$router->get('/help/{category}', [App\Controllers\HelpController::class, 'category'])->name('help_category');
+$router->get('/help/{category}/{article}', [App\Controllers\HelpController::class, 'article'])->name('help_article');
+
 // CMS + contact
 $router->get('/contact', [App\Controllers\PageController::class, 'contact'])->name('contact');
 $router->post('/contact', [App\Controllers\PageController::class, 'submitContact'])->middleware('throttle:5,600');

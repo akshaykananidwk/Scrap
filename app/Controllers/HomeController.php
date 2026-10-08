@@ -116,6 +116,16 @@ final class HomeController extends Controller
             $add($path, 'daily', $path === '/' ? '1.0' : '0.8');
         }
 
+        // The Help Centre answers the questions people put into a search engine
+        // before they have ever heard of us, so every guide belongs in here.
+        $add('/help', 'monthly', '0.7');
+        foreach (\App\Services\GuideService::categories('en') as $guideCategory) {
+            $add('/help/' . $guideCategory['slug'], 'monthly', '0.6');
+            foreach ($guideCategory['articles'] as $guideArticle) {
+                $add('/help/' . $guideCategory['slug'] . '/' . $guideArticle['slug'], 'monthly', '0.5');
+            }
+        }
+
         foreach ($db->select('SELECT slug, updated_at FROM categories WHERE is_active = 1') as $row) {
             $add('/scrap/' . $row['slug'], 'daily', '0.9', $row['updated_at']);
         }

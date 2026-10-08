@@ -38,6 +38,9 @@ $headerPages = Database::instance()->select(
                 <a class="link-light text-decoration-none" href="<?= e(url('market-rates')) ?>">
                     <i class="bi bi-graph-up-arrow me-1"></i>Today's Scrap Rates
                 </a>
+                <a class="link-light text-decoration-none" href="<?= e(url('help')) ?>">
+                    <i class="bi bi-life-preserver me-1"></i>Help
+                </a>
                 <form method="post" action="<?= e(url('language')) ?>" class="d-flex align-items-center gap-1">
                     <?= csrf_field() ?>
                     <i class="bi bi-translate"></i>
@@ -115,9 +118,21 @@ $headerPages = Database::instance()->select(
                     <li class="nav-item">
                         <a class="nav-link <?= active_nav('/market-rates') ?>" href="<?= e(url('market-rates')) ?>"><?= e(__('nav.rates')) ?></a>
                     </li>
+                    <li class="nav-item d-xl-none">
+                        <a class="nav-link d-flex align-items-center gap-2 <?= active_nav('/help') ?>"
+                           href="<?= e(url('help')) ?>">
+                            <i class="bi bi-life-preserver" aria-hidden="true"></i>Help Centre
+                        </a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">More</a>
                         <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item fw-semibold" href="<?= e(url('help')) ?>">
+                                    <i class="bi bi-life-preserver me-2 text-teal" aria-hidden="true"></i>Help Centre
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="<?= e(url('businesses')) ?>">Verified Businesses</a></li>
                             <li><a class="dropdown-item" href="<?= e(url('how-it-works')) ?>">How It Works</a></li>
                             <li><a class="dropdown-item" href="<?= e(url('pricing')) ?>">Pricing</a></li>
